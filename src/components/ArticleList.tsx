@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getArticles, getAllArticles } from '../utils/api';
+import { getAllArticles } from '../utils/api'; // Only need getAllArticles now
 
 interface Article {
   id: number;
@@ -10,29 +10,17 @@ interface Article {
   byline_author: string;
 }
 
-interface ArticleListProps {
-  date: string; // Date prop for filtering by date
-  showAll: boolean; // Show all articles if true, else show by date
-}
-
-const ArticleList: React.FC<ArticleListProps> = ({ date, showAll }) => {
+const ArticleList: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      let fetchedArticles;
-      if (showAll) {
-        // Fetch all articles if showAll is true
-        fetchedArticles = await getAllArticles();
-      } else {
-        // Fetch articles for the specific date
-        fetchedArticles = await getArticles(date);
-      }
+      const fetchedArticles = await getAllArticles();
       setArticles(fetchedArticles);
     };
 
     fetchArticles();
-  }, [date, showAll]); // Fetch whenever date or showAll changes
+  }, []);
 
   if (!articles.length) return <h2>No articles found.</h2>;
 
