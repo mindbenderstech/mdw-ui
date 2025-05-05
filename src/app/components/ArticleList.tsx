@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllArticles } from '../utils/api'; // Only need getAllArticles now
+import { getAllArticles } from '../../utils/api';
 
 interface Article {
   id: number;

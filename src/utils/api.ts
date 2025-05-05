@@ -12,3 +12,21 @@ export const getAllArticles = async () => {
     return [];
   }
 };
+
+export const getArticleById = async (unique_id: string) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id}`, {
+      cache: "no-store", // disables caching, important if data updates
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch article");
+    }
+
+    const data = await res.json();
+    return data.article; // adjust if your API returns differently
+  } catch (error) {
+    console.error("Error fetching the article:", error);
+    return null;
+  }
+};

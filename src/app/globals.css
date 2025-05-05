@@ -11,7 +11,7 @@
 /* Apply custom colors and fonts */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #f7ecec;
+    --background: #ffffff;
     --foreground: #070000;
   }
 }
