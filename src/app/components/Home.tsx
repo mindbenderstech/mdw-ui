@@ -32,143 +32,216 @@ const Home: React.FC = () => {
 
   const latestArticle = articles[0];
   const nextArticles = articles.slice(1, 5);
+  const getRandomArticles = (count: number) => {
+    const shuffled = [...articles].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  const trendingArticles = getRandomArticles(5);
+
+
   return (
-<div className="w-[65%] space-y-4 ml-6">
-  <h2 className="text-2xl font-bold text-white mt-20 mb-10 p-1 rounded bg-indigo-700">Latest News</h2>
-  <div className="flex gap-4">
-    {/* Featured Article - Takes 50% of the left column */}
-    <Link
-      href={`/news/${latestArticle.unique_id}`}
-      className="w-1/2 block group"
-    >
-      <img
-        src={`http://localhost:5000/${latestArticle.image_path}`}
-        alt={latestArticle.title}
-        className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-        style={{ maxHeight: '400px' }}
-      />
-      <p className="text-sm text-gray-600 mb-2">{latestArticle.article_date}</p>
-      <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-        {latestArticle.title}
-      </h2>
-      <p className="text-md text-gray-500 italic">{latestArticle.slug}</p>
-    </Link>
+    <div className="flex gap-6 px-6 mt-10">
+      {/* LEFT: Main News Section (65%) */}
+      <div className="w-[65%] space-y-4 mt-10">
+        <div className="flex gap-4">
+          {/* Featured Article */}
+          <Link
+            href={`/news/${latestArticle.unique_id}`}
+            className="w-1/2 block group mt-3"
+          >
+            <img
+              src={`http://localhost:5000/${latestArticle.image_path}`}
+              alt={latestArticle.title}
+              className="w-full h-auto object-cover rounded-lg group-hover:scale-101 transition-transform"
+              style={{ maxHeight: '400px' }}
+            />
+            <p className="text-sm text-gray-600 mt-2 mb-2">{latestArticle.article_date}</p>
+            <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
+              {latestArticle.title}
+            </h2>
+            <p className="text-md text-gray-500 italic">{latestArticle.slug}</p>
+          </Link>
+  
+          {/* Next Articles */}
+          <div className="w-1/2 grid grid-cols-1 gap-4">
+            {nextArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/news/${article.unique_id}`}
+                className="flex items-start gap-3 hover:bg-gray-100 p-1 rounded transition-colors"
+              >
+                <img
+                  src={`http://localhost:5000/${article.image_path}`}
+                  alt={article.title}
+                  className="w-30 h-20 mt-2 object-cover rounded"
+                />
+                <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
+                  {article.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+  
+        {/* Sports News */}
+        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Sports News</h2>
+        <div className="flex gap-4">
+          {articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0] && (
+            <Link
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].unique_id}`}
+              className="w-1/2 block group mt-4"
+            >
+              <img
+                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].image_path}`}
+                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].title}
+                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
+                style={{ maxHeight: '400px' }}
+              />
+              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].article_date}</p>
+              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
+                {articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].title}
+              </h2>
+              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].slug}</p>
+            </Link>
+          )}
+  
+          <div className="w-1/2 grid grid-cols-1 gap-4">
+            {articles
+              .filter(a => a.news_source_url?.toLowerCase().includes('sports'))
+              .slice(1, 5)
+              .map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/news/${article.unique_id}`}
+                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
+                >
+                  <img
+                    src={`http://localhost:5000/${article.image_path}`}
+                    alt={article.title}
+                    className="w-30 h-20 mt-2 object-cover rounded"
+                  />
+                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
+                    {article.title}
+                  </h3>
+                </Link>
+              ))}
+          </div>
+        </div>
+  
+        {/* Crime News */}
+        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Crime News</h2>
+        <div className="flex gap-4">
+          {articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0] && (
+            <Link
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].unique_id}`}
+              className="w-1/2 block group mt-4"
+            >
+              <img
+                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].image_path}`}
+                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].title}
+                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
+                style={{ maxHeight: '400px' }}
+              />
+              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].article_date}</p>
+              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
+                {articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].title}
+              </h2>
+              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].slug}</p>
+            </Link>
+          )}
+  
+          <div className="w-1/2 grid grid-cols-1 gap-4">
+            {articles
+              .filter(a => a.news_source_url?.toLowerCase().includes('crime'))
+              .slice(1, 5)
+              .map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/news/${article.unique_id}`}
+                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
+                >
+                  <img
+                    src={`http://localhost:5000/${article.image_path}`}
+                    alt={article.title}
+                    className="w-30 h-20 mt-2 object-cover rounded"
+                  />
+                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
+                    {article.title}
+                  </h3>
+                </Link>
+              ))}
+          </div>
+        </div>
 
-    {/* Next 5 Articles - Takes other 50% */}
-    <div className="w-1/2 grid grid-cols-1 gap-4">
-      {nextArticles.map((article) => (
-        <Link
-          key={article.id}
-          href={`/news/${article.unique_id}`}
-          className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-        >
-          <img
-            src={`http://localhost:5000/${article.image_path}`}
-            alt={article.title}
-            className="w-20 h-16 object-cover rounded"
-          />
-          <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-            {article.title}
-          </h3>
-        </Link>
-      ))}
+        {/*Entertainment News */}
+        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Entertainment News</h2>
+        <div className="flex gap-4">
+          {articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0] && (
+            <Link
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].unique_id}`}
+              className="w-1/2 block group mt-4"
+            >
+              <img
+                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].image_path}`}
+                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].title}
+                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
+                style={{ maxHeight: '400px' }}
+              />
+              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].article_date}</p>
+              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
+                {articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].title}
+              </h2>
+              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].slug}</p>
+            </Link>
+          )}
+  
+          <div className="w-1/2 grid grid-cols-1 gap-4">
+            {articles
+              .filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))
+              .slice(1, 5)
+              .map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/news/${article.unique_id}`}
+                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
+                >
+                  <img
+                    src={`http://localhost:5000/${article.image_path}`}
+                    alt={article.title}
+                    className="w-30 h-20 mt-2 object-cover rounded"
+                  />
+                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
+                    {article.title}
+                  </h3>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </div>
+  
+      {/* RIGHT: Trending News Section */}
+      <div className="w-[30%] space-y-4">
+        <h2 className="text-xl font-bold text-white mt-12 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
+        {trendingArticles.map((article) => (
+          <Link
+            key={article.id}
+            href={`/news/${article.unique_id}`}
+            className="block p-2 rounded hover:bg-gray-100 transition"
+          >
+            <img
+              src={`http://localhost:5000/${article.image_path}`}
+              alt={article.title}
+              className="w-full h-50 mt-2 object-cover rounded mb-2"
+            />
+            <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
+            <p className="text-xs text-gray-500">{article.article_date}</p>
+          </Link>
+        ))}
+      </div>
     </div>
-  </div>
-  <h2 className="text-2xl font-bold text-white mt-30 mb-10 p-1 rounded bg-indigo-700">Sports News</h2>
-<div className="flex gap-4">
-  {/* Featured Sports Article */}
-  {articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0] && (
-    <Link
-      href={`/news/${articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].unique_id}`}
-      className="w-1/2 block group"
-    >
-      <img
-        src={`http://localhost:5000/${articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].image_path}`}
-        alt={articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].title}
-        className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-        style={{ maxHeight: '400px' }}
-      />
-      <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].article_date}</p>
-      <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-        {articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].title}
-      </h2>
-      <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url.toLowerCase().includes('sports'))[0].slug}</p>
-    </Link>
-  )}
-
-  {/* Next Sports Articles */}
-  <div className="w-1/2 grid grid-cols-1 gap-4">
-    {articles
-      .filter(a => a.news_source_url.toLowerCase().includes('sports'))
-      .slice(1, 5)
-      .map((article) => (
-        <Link
-          key={article.id}
-          href={`/news/${article.unique_id}`}
-          className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-        >
-          <img
-            src={`http://localhost:5000/${article.image_path}`}
-            alt={article.title}
-            className="w-20 h-16 object-cover rounded"
-          />
-          <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-            {article.title}
-          </h3>
-        </Link>
-      ))}
-  </div>
-</div>
-<h2 className="text-2xl font-bold text-white mt-30 mb-10 p-1 rounded bg-indigo-700">Crime News</h2>
-<div className="flex gap-4">
-  {/* Featured Sports Article */}
-  {articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0] && (
-    <Link
-      href={`/news/${articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].unique_id}`}
-      className="w-1/2 block group"
-    >
-      <img
-        src={`http://localhost:5000/${articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].image_path}`}
-        alt={articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].title}
-        className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-        style={{ maxHeight: '400px' }}
-      />
-      <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].article_date}</p>
-      <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-        {articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].title}
-      </h2>
-      <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url.toLowerCase().includes('crime'))[0].slug}</p>
-    </Link>
-  )}
-
-  {/* Next Sports Articles */}
-  <div className="w-1/2 grid grid-cols-1 gap-4">
-    {articles
-      .filter(a => a.news_source_url.toLowerCase().includes('crime'))
-      .slice(1, 5)
-      .map((article) => (
-        <Link
-          key={article.id}
-          href={`/news/${article.unique_id}`}
-          className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-        >
-          <img
-            src={`http://localhost:5000/${article.image_path}`}
-            alt={article.title}
-            className="w-20 h-16 object-cover rounded"
-          />
-          <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-            {article.title}
-          </h3>
-        </Link>
-      ))}
-  </div>
-</div>
-  {/* Right Content - 30% width (blank) */}
-  <div className="w-[30%]"></div>
-</div>
-
   );
+  
 };
 
 export default Home;
