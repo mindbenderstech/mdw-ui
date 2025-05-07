@@ -41,9 +41,9 @@ const Home: React.FC = () => {
 
 
   return (
-    <div className="flex gap-6 px-6 mt-10">
-      {/* LEFT: Main News Section (65%) */}
-      <div className="w-[65%] space-y-4 mt-10">
+    <div className="flex gap-6 px-5 mt-10">
+      {/* LEFT: Main News Section (70%) */}
+      <div className="w-[70%] space-y-4 mt-10">
         <div className="flex gap-4">
           {/* Featured Article */}
           <Link
@@ -69,12 +69,12 @@ const Home: React.FC = () => {
               <Link
                 key={article.id}
                 href={`/news/${article.unique_id}`}
-                className="flex items-start gap-3 hover:bg-gray-100 p-1 rounded transition-colors"
+                className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
                   src={`http://localhost:5000/${article.image_path}`}
                   alt={article.title}
-                  className="w-30 h-20 mt-2 object-cover rounded"
+                  className="w-35 h-20 mt-2 object-cover rounded"
                 />
                 <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
                   {article.title}
@@ -227,7 +227,7 @@ const Home: React.FC = () => {
           <Link
             key={article.id}
             href={`/news/${article.unique_id}`}
-            className="block p-2 rounded hover:bg-gray-100 transition"
+            className="block rounded hover:bg-gray-100 transition"
           >
             <img
               src={`http://localhost:5000/${article.image_path}`}
