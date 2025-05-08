@@ -41,7 +41,7 @@ const Home: React.FC = () => {
 
 
   return (
-    <div className="flex gap-6 px-5 mt-10">
+    <div className="flex gap-2 px-5 mt-10">
       {/* LEFT: Main News Section (70%) */}
       <div className="w-[70%] space-y-4 mt-10">
         <div className="flex gap-4">
@@ -64,7 +64,7 @@ const Home: React.FC = () => {
           </Link>
   
           {/* Next Articles */}
-          <div className="w-1/2 grid grid-cols-1 gap-4">
+          <div className="w-1/2 grid grid-cols-1 gap-2">
             {nextArticles.map((article) => (
               <Link
                 key={article.id}
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
                   <img
                     src={`http://localhost:5000/${article.image_path}`}
                     alt={article.title}
-                    className="w-30 h-20 mt-2 object-cover rounded"
+                    className="w-35 h-20 mt-2 object-cover rounded"
                   />
                   <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
                     {article.title}
@@ -164,7 +164,7 @@ const Home: React.FC = () => {
                   <img
                     src={`http://localhost:5000/${article.image_path}`}
                     alt={article.title}
-                    className="w-30 h-20 mt-2 object-cover rounded"
+                    className="w-35 h-20 mt-2 object-cover rounded"
                   />
                   <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
                     {article.title}
@@ -209,7 +209,7 @@ const Home: React.FC = () => {
                   <img
                     src={`http://localhost:5000/${article.image_path}`}
                     alt={article.title}
-                    className="w-30 h-20 mt-2 object-cover rounded"
+                    className="w-35 h-20 mt-2 object-cover rounded"
                   />
                   <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
                     {article.title}
@@ -221,20 +221,20 @@ const Home: React.FC = () => {
       </div>
   
       {/* RIGHT: Trending News Section */}
-      <div className="w-[30%] space-y-4">
+      <div className="w-[30%] space-y-2">
         <h2 className="text-xl font-bold text-white mt-12 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
         {trendingArticles.map((article) => (
           <Link
             key={article.id}
             href={`/news/${article.unique_id}`}
-            className="block rounded hover:bg-gray-100 transition"
+            className="block rounded hover:bg-gray-100 p-1 transition"
           >
             <img
               src={`http://localhost:5000/${article.image_path}`}
               alt={article.title}
               className="w-full h-50 mt-2 object-cover rounded mb-2"
             />
-            <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
+            <h3 className="text-sm font-semibold text-gray-800 hover:text-indigo-700">{article.title}</h3>
             <p className="text-xs text-gray-500">{article.article_date}</p>
           </Link>
         ))}
