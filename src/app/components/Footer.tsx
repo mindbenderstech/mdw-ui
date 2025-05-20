@@ -8,7 +8,7 @@ export default function Footer() {
         <div>
           <h2 className="text-2xl font-bold mb-2">Media World</h2>
           <p className="text-gray-100 leading-relaxed">
-          Media World is your gateway to fast, clear, and credible news from across World. We focus on delivering essential stories with clarity—stripped of fluff, packed with impact. Whether you're on the move or on a break, Media World keeps you informed without wasting your time.
+          Media World is your gateway to fast, clear, and credible news from across World. We focus on delivering essential stories with clarity—stripped of fluff, packed with impact. Whether you&apos;re on the move or on a break, Media World keeps you informed without wasting your time.
           </p>
         </div>
 
