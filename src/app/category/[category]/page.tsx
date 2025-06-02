@@ -30,7 +30,7 @@ export default function CategoryPage() {
     useEffect(() => {
         async function fetchCategoryArticles() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/category/${category}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/category/${category}`);
                 const data = await res.json();
                 if (data.articles) {
                     setArticles(data.articles);
