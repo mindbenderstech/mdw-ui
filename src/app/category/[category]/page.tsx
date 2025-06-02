@@ -30,7 +30,7 @@ export default function CategoryPage() {
     useEffect(() => {
         async function fetchCategoryArticles() {
             try {
-                const res = await fetch(`http://localhost:5000/api/articles/category/${category}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles/category/${category}`);
                 const data = await res.json();
                 if (data.articles) {
                     setArticles(data.articles);
@@ -62,7 +62,7 @@ export default function CategoryPage() {
                                 <div className="flex flex-col md:flex-row gap-4">
                                     {article.image_path && (
                                         <img
-                                            src={`http://localhost:5000/${article.image_path}`}
+                                            src={article.image_path}
                                             alt={article.title}
                                             className="w-full md:w-1/2 max-h-60 object-cover"
                                         />
@@ -95,7 +95,7 @@ export default function CategoryPage() {
                         className="block p-2 rounded hover:bg-gray-100 transition"
                     >
                         <img
-                            src={`http://localhost:5000/${article.image_path}`}
+                            src={article.image_path}
                             alt={article.title}
                             className="w-full h-50 object-cover rounded mb-2"
                         />

@@ -29,7 +29,7 @@ const ArticleList: React.FC = () => {
       {articles.map((article) => (
         <div key={article.id} className="article">
           <h2>{article.title}</h2>
-          <img alt={article.title} src={`http://localhost:5000/${article.image_path}`} />
+          <img alt={article.title} src={article.image_path} />
           <h3>{article.byline_author}</h3>
           <p>{article.article_detail}</p>
         </div>

@@ -51,7 +51,7 @@ const Home: React.FC = () => {
             className="w-1/2 block group mt-3"
           >
             <img
-              src={`http://localhost:5000/${latestArticle.image_path}`}
+              src={latestArticle.image_path}
               alt={latestArticle.title}
               className="w-full h-auto object-cover rounded-lg group-hover:scale-101 transition-transform"
               style={{ maxHeight: '400px' }}
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
-                  src={`http://localhost:5000/${article.image_path}`}
+                  src={article.image_path}
                   alt={article.title}
                   className="w-35 h-20 mt-2 object-cover rounded"
                 />
@@ -93,7 +93,7 @@ const Home: React.FC = () => {
               className="w-1/2 block group mt-4"
             >
               <img
-                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].image_path}`}
+                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].image_path}
                 alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].title}
                 className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
                 style={{ maxHeight: '400px' }}
@@ -117,7 +117,7 @@ const Home: React.FC = () => {
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
-                    src={`http://localhost:5000/${article.image_path}`}
+                    src={article.image_path}
                     alt={article.title}
                     className="w-35 h-20 mt-2 object-cover rounded"
                   />
@@ -138,7 +138,7 @@ const Home: React.FC = () => {
               className="w-1/2 block group mt-4"
             >
               <img
-                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].image_path}`}
+                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].image_path}
                 alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].title}
                 className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
                 style={{ maxHeight: '400px' }}
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
-                    src={`http://localhost:5000/${article.image_path}`}
+                    src={article.image_path}
                     alt={article.title}
                     className="w-35 h-20 mt-2 object-cover rounded"
                   />
@@ -183,7 +183,7 @@ const Home: React.FC = () => {
               className="w-1/2 block group mt-4"
             >
               <img
-                src={`http://localhost:5000/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].image_path}`}
+                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].image_path}
                 alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].title}
                 className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
                 style={{ maxHeight: '400px' }}
@@ -207,7 +207,7 @@ const Home: React.FC = () => {
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
-                    src={`http://localhost:5000/${article.image_path}`}
+                    src={article.image_path}
                     alt={article.title}
                     className="w-35 h-20 mt-2 object-cover rounded"
                   />
@@ -230,7 +230,7 @@ const Home: React.FC = () => {
             className="block rounded hover:bg-gray-100 p-1 transition"
           >
             <img
-              src={`http://localhost:5000/${article.image_path}`}
+              src={article.image_path}
               alt={article.title}
               className="w-full h-50 mt-2 object-cover rounded mb-2"
             />

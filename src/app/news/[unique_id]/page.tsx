@@ -97,7 +97,7 @@ export default async function ArticleDetailPage({
 
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
-              src={`http://localhost:5000/${article.image_path}`}
+              src={article.image_path}
               alt={article.title}
               className="w-full object-cover max-h-[500px] transition-transform duration-300 hover:scale-105"
             />
@@ -118,7 +118,7 @@ export default async function ArticleDetailPage({
               className="block p-2 rounded hover:bg-gray-100 transition"
             >
               <img
-                src={`http://localhost:5000/${article.image_path}`}
+                src={article.image_path}
                 alt={article.title}
                 className="w-full h-50 object-cover rounded mb-2"
               />
@@ -139,7 +139,7 @@ export default async function ArticleDetailPage({
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img
-              src={`http://localhost:5000/${article.image_path}`}
+              src={article.image_path}
               alt={article.title}
               className="w-full h-50 object-cover rounded mb-2"
             />

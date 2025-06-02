@@ -34,7 +34,7 @@ const ArticleDetail: React.FC = () => {
       <div className="article-detail">
         <h1 className="text-3xl font-bold">{article.title}</h1>
         <h3 className="text-lg">{article.byline_author}</h3>
-        <img src={`http://localhost:5000/${article.image_path}`} alt={article.title} />
+        <img src={article.image_path} alt={article.title} />
         <p>{article.article_detail}</p>
       </div>
     </div>
