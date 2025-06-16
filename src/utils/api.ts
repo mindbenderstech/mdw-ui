@@ -1,11 +1,24 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-// Function to fetch all articles
-export const getAllArticles = async () => {
+// ✅ NEW: Function to get supported languages
+export const getLanguages = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/articles/all`);
+    const response = await axios.get(`${API_BASE_URL}/api/languages`);
+    return response.data.languages; // ["marathi", "hindi"]
+  } catch (error) {
+    console.error('Error fetching languages:', error);
+    return [];
+  }
+};
+
+// Fetch all articles by language
+export const getAllArticles = async (language = 'marathi') => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/articles/all`, {
+      params: { language },
+    });
     return response.data.articles;
   } catch (error) {
     console.error('Error fetching all articles:', error);
@@ -13,10 +26,11 @@ export const getAllArticles = async () => {
   }
 };
 
-export const getArticleById = async (unique_id: string) => {
+// Fetch one article by unique ID and language
+export const getArticleById = async (unique_id: string, language = 'marathi') => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id}`, {
-      cache: "no-store", // disables caching, important if data updates
+    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id}?language=${language}`, {
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -24,7 +38,7 @@ export const getArticleById = async (unique_id: string) => {
     }
 
     const data = await res.json();
-    return data.article; // adjust if your API returns differently
+    return data.article;
   } catch (error) {
     console.error("Error fetching the article:", error);
     return null;

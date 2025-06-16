@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllArticles } from '../../utils/api';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext'; // ✅ Import context
 
 interface Article {
   id: number;
@@ -18,15 +19,16 @@ interface Article {
 
 const Home: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
+  const { language } = useLanguage(); // ✅ Use language from context
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const fetchedArticles = await getAllArticles();
+      const fetchedArticles = await getAllArticles(language); // ✅ Pass language
       setArticles(fetchedArticles);
     };
 
     fetchArticles();
-  }, []);
+  }, [language]); // ✅ Rerun when language changes
 
   if (!articles.length) return <h2>No articles found.</h2>;
 
@@ -47,7 +49,7 @@ const Home: React.FC = () => {
         <div className="flex gap-4">
           {/* Featured Article */}
           <Link
-            href={`/news/${latestArticle.unique_id}`}
+            href={`/news/${latestArticle.unique_id}/${language}`}
             className="w-1/2 block group mt-3"
           >
             <img
@@ -68,7 +70,7 @@ const Home: React.FC = () => {
             {nextArticles.map((article) => (
               <Link
                 key={article.id}
-                href={`/news/${article.unique_id}`}
+                href={`/news/${article.unique_id}/${language}`}
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
@@ -89,7 +91,7 @@ const Home: React.FC = () => {
         <div className="flex gap-4">
           {articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0] && (
             <Link
-              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].unique_id}`}
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].unique_id}/${language}`}
               className="w-1/2 block group mt-4"
             >
               <img
@@ -113,7 +115,7 @@ const Home: React.FC = () => {
               .map((article) => (
                 <Link
                   key={article.id}
-                  href={`/news/${article.unique_id}`}
+                  href={`/news/${article.unique_id}/${language}`}
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
@@ -134,7 +136,7 @@ const Home: React.FC = () => {
         <div className="flex gap-4">
           {articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0] && (
             <Link
-              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].unique_id}`}
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].unique_id}/${language}`}
               className="w-1/2 block group mt-4"
             >
               <img
@@ -158,7 +160,7 @@ const Home: React.FC = () => {
               .map((article) => (
                 <Link
                   key={article.id}
-                  href={`/news/${article.unique_id}`}
+                  href={`/news/${article.unique_id}/${language}`}
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
@@ -179,7 +181,7 @@ const Home: React.FC = () => {
         <div className="flex gap-4">
           {articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0] && (
             <Link
-              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].unique_id}`}
+              href={`/news/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].unique_id}/${language}`}
               className="w-1/2 block group mt-4"
             >
               <img
@@ -203,7 +205,7 @@ const Home: React.FC = () => {
               .map((article) => (
                 <Link
                   key={article.id}
-                  href={`/news/${article.unique_id}`}
+                  href={`/news/${article.unique_id}/${language}`}
                   className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
                 >
                   <img
@@ -226,7 +228,7 @@ const Home: React.FC = () => {
         {trendingArticles.map((article) => (
           <Link
             key={article.id}
-            href={`/news/${article.unique_id}`}
+            href={`/news/${article.unique_id}/${language}`}
             className="block rounded hover:bg-gray-100 p-1 transition"
           >
             <img

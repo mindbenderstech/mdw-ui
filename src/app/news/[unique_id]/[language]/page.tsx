@@ -1,5 +1,9 @@
+'use client';
+
 import { JSX } from "react/jsx-dev-runtime";
-import { getArticleById, getAllArticles } from "../../../utils/api"; // Adjust if needed
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { getArticleById, getAllArticles } from '../../../../utils/api'; // ✅ Import API functions
 
 interface Article {
   id: number;
@@ -12,16 +16,42 @@ interface Article {
   article_date: string;
 }
 
-export default async function ArticleDetailPage({
-  params,
-}: {
-  params: Promise<{ unique_id: string }>;
-}) {
-  const { unique_id } = await params;
-  const article: Article = await getArticleById(unique_id);
+export default function ArticleDetailPage() {
+  const { unique_id, language } = useParams() as { unique_id: string; language: string }; // ✅ Get unique_id and language from URL
+
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchArticle() {
+      try {
+        const fetchedArticle = await getArticleById(unique_id, language); // ✅ Pass language and unique_id
+        setArticle(fetchedArticle);
+      } catch (error) {
+        console.error('Error fetching the article:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchArticle();
+  }, [unique_id, language]); // Refetch when unique_id or language changes
 
   // Fetch all articles for trending logic
-  const allArticles: Article[] = await getAllArticles();
+  const [allArticles, setAllArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    async function fetchAllArticles() {
+      try {
+        const fetchedArticles = await getAllArticles(language);
+        setAllArticles(fetchedArticles);
+      } catch (error) {
+        console.error('Error fetching all articles:', error);
+      }
+    }
+
+    fetchAllArticles();
+  }, [language]); // Refetch when language changes
 
   // Trending Articles Logic: Get 5 random articles
   const getRandomArticles = (articles: Article[], count: number) => {
@@ -42,7 +72,7 @@ export default async function ArticleDetailPage({
   };
 
   // Extract the category from the current article's news_source_url
-  const articleCategory = extractCategoryFromUrl(article.news_source_url);
+  const articleCategory = extractCategoryFromUrl(article?.news_source_url || '');
 
   // Fetch related articles based on category/topic (not exact URL match)
   const relatedArticles = allArticles
@@ -76,6 +106,10 @@ export default async function ArticleDetailPage({
     return <div dangerouslySetInnerHTML={{ __html: paragraphs.join('') }} className="space-y-4" />;
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   if (!article) {
     return (
       <div className="p-8 text-center text-gray-600 text-lg">
@@ -84,7 +118,7 @@ export default async function ArticleDetailPage({
     );
   }
 
-  return (
+   return (
     <div className="flex gap-6 px-6 mt-10">
       {/* LEFT: Article Content (70%) */}
       <div className="w-[70%] space-y-4">
@@ -114,7 +148,7 @@ export default async function ArticleDetailPage({
           {relatedArticles.map((article) => (
             <a
               key={article.id}
-              href={`/news/${article.unique_id}`}
+              href={`/news/${article.unique_id}/${language}`}
               className="block p-2 rounded hover:bg-gray-100 transition"
             >
               <img
@@ -135,7 +169,7 @@ export default async function ArticleDetailPage({
         {trendingArticles.map((article) => (
           <a
             key={article.id}
-            href={`/news/${article.unique_id}`}
+            href={`/news/${article.unique_id}/${language}`}
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img

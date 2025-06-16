@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+// import { useLanguage } from '../../../../context/LanguageContext'; // ✅ import context
+import{API_BASE_URL} from '../../../../utils/api'
 
 type Article = {
     unique_id: string;
@@ -16,21 +18,18 @@ type Article = {
 };
 
 export default function CategoryPage() {
-    const params = useParams() as { category: string };
-    const category = params.category;
+    const params = useParams() as { category: string, language: string };  // ✅ access category and language from URL
+    const { category, language } = params;
+
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
-    // Trending Articles Logic
-    const getRandomArticles = (count: number) => {
-        const shuffled = [...articles].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
-    };
-    const trendingArticles = getRandomArticles(5);
 
     useEffect(() => {
         async function fetchCategoryArticles() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/articles/category/${category}`);
+                const res = await fetch(
+                    `${API_BASE_URL}/api/articles/category/${category}?language=${language}`
+                );
                 const data = await res.json();
                 if (data.articles) {
                     setArticles(data.articles);
@@ -43,7 +42,14 @@ export default function CategoryPage() {
         }
 
         fetchCategoryArticles();
-    }, [category]);
+    }, [category, language]); // ✅ refetch when either category or language changes
+
+    const getRandomArticles = (count: number) => {
+        const shuffled = [...articles].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    };
+
+    const trendingArticles = getRandomArticles(5);
 
     return (
         <div className="flex gap-6 px-6">
@@ -72,7 +78,7 @@ export default function CategoryPage() {
                                         <p className="text-black">{article.article_date}</p>
                                         
                                         <a
-                                            href={`/news/${article.unique_id}`}
+                                            href={`/news/${article.unique_id}/${language}`}
                                             className="inline-block mt-4 ml-45 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
                                         >
                                             Read More
@@ -91,7 +97,7 @@ export default function CategoryPage() {
                 {trendingArticles.map((article) => (
                     <a
                         key={article.unique_id}
-                        href={`/news/${article.unique_id}`}
+                        href={`/news/${article.unique_id}/${language}`}
                         className="block p-2 rounded hover:bg-gray-100 transition"
                     >
                         <img

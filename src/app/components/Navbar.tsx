@@ -2,40 +2,47 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useLanguage } from '../../context/LanguageContext';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language, setLanguage, availableLanguages } = useLanguage();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value);
+  };
+
   return (
     <nav className="bg-teal-700 border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Left side: Media World and Navigation Links */}
-        <div className="flex items-center space-x-2">
-          <span className="text-white text-xl font-bold tracking-wide">🌐 Media World</span>
+      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        {/* Left side: Logo */}
+        <div className="flex items-center space-x-2 whitespace-nowrap">
+          <span className="text-white text-xl font-bold tracking-wide">🌐</span>
+          <span className="text-white text-xl font-bold tracking-wide">Headliness</span>
         </div>
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 text-sm font-semibold text-white uppercase tracking-wide ml-6">
-          <Link href="/" className="hover:bg-white hover:text-black px-2 py-2 rounded ml-3">Home</Link>
-          <Link href="/category/business" className="hover:bg-white hover:text-black px-2 py-2 rounded">Business</Link>
-          <Link href="/category/entertainment" className="hover:bg-white hover:text-black px-2 py-2 rounded">Entertainment</Link>
-          <Link href="/category/sports" className="hover:bg-white hover:text-black px-2 py-2 rounded">Sports</Link>
-          <Link href="/category/crime" className="hover:bg-white hover:text-black px-2 py-2 rounded">Crime</Link>
-          <Link href="/category/india" className="hover:bg-white hover:text-black px-2 py-2 rounded">Country</Link>
-          <Link href="/category/politics" className="hover:bg-white hover:text-black px-2 py-2 rounded">Politics</Link>
+          <Link href="/" className="hover:bg-white hover:text-black px-2 py-2 rounded ml-6">Home</Link>          
+          <Link href={`/category/business/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded ml-3">Business</Link>
+          <Link href={`/category/entertainment/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Entertainment</Link>
+          <Link href={`/category/sports/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Sports</Link>
+          <Link href={`/category/crime/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Crime</Link>
+          <Link href={`/category/india/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Country</Link>
+          <Link href={`/category/politics/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Politics</Link>
         </div>
 
-        {/* Right side: Search Box and Login Button */}
+        {/* Right side: Search, Login, Language Selector */}
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
               type="text"
               placeholder="Search..."
-              className="px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-white"
+              className="ml-4 px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-white"
             />
             <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-white hover:bg-indigo-800 p-1 rounded focus:outline-none">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
@@ -44,12 +51,37 @@ const NavBar = () => {
 
             </button>
           </div>
+
           <button className="text-white px-3 py-2 rounded-md hover:bg-red-500 focus:outline-none">
             Login
           </button>
+
+          {/* Language Selector */}
+          <div className="relative">
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className="bg-teal-600 text-white px-4 py-2 rounded-md shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ease-in-out duration-200"
+            >
+              {availableLanguages.map((lang) => (
+                <option key={lang} value={lang}>
+                  {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                </option>
+              ))}
+            </select>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="w-4 h-5 absolute right-0 top-1/2 transform -translate-y-1/2 text-white"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
         </div>
 
-        {/* Hamburger Menu for Mobile */}
+        {/* Hamburger for Mobile */}
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className="text-blue-600 hover:text-blue-800 focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
@@ -59,17 +91,16 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown */}
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-md">
           <div className="flex flex-col space-y-4 p-4 text-sm font-semibold uppercase">
-            <Link href="/" className="hover:text-blue-600">Home</Link>
-            <Link href="/category/business" className="hover:text-blue-600">Business</Link>
-            <Link href="/category/entertainment" className="hover:text-blue-600">Entertainment</Link>
-            <Link href="/category/sports" className="hover:text-blue-600">Sports</Link>
-            <Link href="/category/crime" className="hover:text-blue-600">Crime</Link>
-            <Link href="/category/india" className="hover:text-blue-600">Country</Link>
-            <Link href="/category/politics" className="hover:text-blue-600">Politics</Link>
+            <Link href={`/category/business/${language}`} className="hover:text-blue-600">Business</Link>
+            <Link href={`/category/entertainment/${language}`} className="hover:text-blue-600">Entertainment</Link>
+            <Link href={`/category/sports/${language}`} className="hover:text-blue-600">Sports</Link>
+            <Link href={`/category/crime/${language}`} className="hover:text-blue-600">Crime</Link>
+            <Link href={`/category/india/${language}`} className="hover:text-blue-600">Country</Link>
+            <Link href={`/category/politics/${language}`} className="hover:text-blue-600">Politics</Link>
           </div>
         </div>
       )}
