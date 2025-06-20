@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-// import { useLanguage } from '../../../../context/LanguageContext'; // ✅ import context
-import{API_BASE_URL} from '../../../../utils/api'
+import { useLanguage } from '../../../../context/LanguageContext';  // Import the context for language
+import { API_BASE_URL } from '../../../../utils/api';
 
 type Article = {
     unique_id: string;
+    unique_id_url: string;
     title: string;
     slug: string;
     image_path: string;
@@ -23,12 +24,14 @@ export default function CategoryPage() {
 
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
+    const { language: currentLanguage } = useLanguage();
 
     useEffect(() => {
         async function fetchCategoryArticles() {
             try {
+                setLoading(true)
                 const res = await fetch(
-                    `${API_BASE_URL}/api/articles/category/${category}?language=${language}`
+                    `${API_BASE_URL}/api/articles/category/${category}?language=${currentLanguage}`
                 );
                 const data = await res.json();
                 if (data.articles) {
@@ -42,7 +45,7 @@ export default function CategoryPage() {
         }
 
         fetchCategoryArticles();
-    }, [category, language]); // ✅ refetch when either category or language changes
+    }, [category, currentLanguage]); // ✅ refetch when either category or language changes
 
     const getRandomArticles = (count: number) => {
         const shuffled = [...articles].sort(() => 0.5 - Math.random());
@@ -63,7 +66,7 @@ export default function CategoryPage() {
                 ) : (
                     <ul className="space-y-6">
                         {articles.map((article) => (
-                            <li key={article.unique_id} className="pb-4">
+                            <li key={article.unique_id_url} className="pb-4">
                                 <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
                                 <div className="flex flex-col md:flex-row gap-4">
                                     {article.image_path && (
@@ -78,7 +81,7 @@ export default function CategoryPage() {
                                         <p className="text-black">{article.article_date}</p>
                                         
                                         <a
-                                            href={`/news/${article.unique_id}/${language}`}
+                                            href={`/news/${currentLanguage}/${article.unique_id_url}`}
                                             className="inline-block mt-4 ml-45 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
                                         >
                                             Read More
@@ -96,8 +99,8 @@ export default function CategoryPage() {
                 <h2 className="text-xl font-bold text-white mt-10 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
                 {trendingArticles.map((article) => (
                     <a
-                        key={article.unique_id}
-                        href={`/news/${article.unique_id}/${language}`}
+                        key={article.unique_id_url}
+                        href={`/news/${currentLanguage}/${article.unique_id_url}`}
                         className="block p-2 rounded hover:bg-gray-100 transition"
                     >
                         <img

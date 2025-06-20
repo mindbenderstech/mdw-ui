@@ -26,11 +26,11 @@ export const getAllArticles = async (language = 'marathi') => {
   }
 };
 
-// Fetch one article by unique ID and language
-export const getArticleById = async (unique_id: string, language = 'marathi') => {
+// Fetch one article by unique_id_url and language
+export const getArticleByUniqueIdUrl = async (unique_id_url: string, language = 'marathi') => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id}?language=${language}`, {
-      cache: "no-store",
+    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id_url}?language=${language}`, {
+      cache: "no-store", // Avoid caching
     });
 
     if (!res.ok) {

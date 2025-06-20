@@ -19,11 +19,11 @@ const NavBar = () => {
   return (
     <nav className="bg-teal-700 border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        {/* Left side: Logo */}
-        <div className="flex items-center space-x-2 whitespace-nowrap">
-          <span className="text-white text-xl font-bold tracking-wide">🌐</span>
-          <span className="text-white text-xl font-bold tracking-wide">Headliness</span>
-        </div>
+          <img 
+            src="/images/headliness navbar logo.png"
+            alt="Headliness Logo"
+            className="w-40 h-17 py-1 mr-6 object-contain"  
+        />
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 text-sm font-semibold text-white uppercase tracking-wide ml-6">

@@ -3,11 +3,12 @@
 import { JSX } from "react/jsx-dev-runtime";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getArticleById, getAllArticles } from '../../../../utils/api'; // ✅ Import API functions
+import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api'; // ✅ Update to use getArticleByUniqueIdUrl
 
 interface Article {
   id: number;
   unique_id: string;
+  unique_id_url: string; // Use unique_id_url instead
   title: string;
   image_path: string;
   news_source_url: string;
@@ -17,7 +18,7 @@ interface Article {
 }
 
 export default function ArticleDetailPage() {
-  const { unique_id, language } = useParams() as { unique_id: string; language: string }; // ✅ Get unique_id and language from URL
+  const { unique_id_url, language } = useParams() as { language: string; unique_id_url: string };
 
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const fetchedArticle = await getArticleById(unique_id, language); // ✅ Pass language and unique_id
+        const fetchedArticle = await getArticleByUniqueIdUrl(unique_id_url, language);
         setArticle(fetchedArticle);
       } catch (error) {
         console.error('Error fetching the article:', error);
@@ -35,9 +36,8 @@ export default function ArticleDetailPage() {
     }
 
     fetchArticle();
-  }, [unique_id, language]); // Refetch when unique_id or language changes
+  }, [unique_id_url, language]);
 
-  // Fetch all articles for trending logic
   const [allArticles, setAllArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function ArticleDetailPage() {
     }
 
     fetchAllArticles();
-  }, [language]); // Refetch when language changes
+  }, [language]);
 
   // Trending Articles Logic: Get 5 random articles
   const getRandomArticles = (articles: Article[], count: number) => {
@@ -61,7 +61,7 @@ export default function ArticleDetailPage() {
 
   // Get 5 random articles (excluding the current article)
   const trendingArticles = getRandomArticles(
-    allArticles.filter((a) => a.unique_id !== unique_id),
+    allArticles.filter((a) => a.unique_id_url !== unique_id_url),  // Use unique_id_url for exclusion
     5
   );
 
@@ -79,7 +79,7 @@ export default function ArticleDetailPage() {
     .filter(
       (a) =>
         extractCategoryFromUrl(a.news_source_url) === articleCategory &&
-        a.unique_id !== unique_id
+        a.unique_id_url !== unique_id_url
     )
     .slice(0, 3); // Limit to 3 related articles
 
@@ -148,7 +148,7 @@ export default function ArticleDetailPage() {
           {relatedArticles.map((article) => (
             <a
               key={article.id}
-              href={`/news/${article.unique_id}/${language}`}
+              href={`/news/${language}/${article.unique_id_url}`}  // Updated to use unique_id_url
               className="block p-2 rounded hover:bg-gray-100 transition"
             >
               <img
@@ -169,7 +169,7 @@ export default function ArticleDetailPage() {
         {trendingArticles.map((article) => (
           <a
             key={article.id}
-            href={`/news/${article.unique_id}/${language}`}
+            href={`/news/${language}/${article.unique_id_url}`}  // Updated to use unique_id_url
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img
