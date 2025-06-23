@@ -30,9 +30,9 @@ const About = () => {
           {/* Right Section with Image */}
           <div className="flex justify-center">
             <img
-              src="/images/headliness_logo.png"  // Replace this path with your image path
+              src="/images/headliness navbar logo.png"
               alt="Headliness Logo"
-              className="rounded-lg shadow-lg"
+              className="rounded-lg shadow-lg p-10 bg-teal-600"
             />
           </div>
         </div>
@@ -61,9 +61,9 @@ const About = () => {
             </div>
 
             <div className="text-center">
-              <div className="bg-teal-100 text-teal-700 p-6 rounded-full inline-block">
-                <svg className="w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 9l2 2-2 2m0 0l2 2m-2-2h12m-4-4l2 2-2 2m2-2H2" />
+              <div className="bg-teal-100 text-teal-700 p-6 rounded-full inline-block rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#087775">
+                <path d="M271-120 80-311l192-192 42 42-120 120h646v60H194l119 119-42 42Zm418-337-42-42 119-119H120v-60h646L646-798l42-42 192 192-191 191Z"/>
                 </svg>
               </div>
               <h3 className="text-xl font-bold mt-4">Clear & Concise</h3>
