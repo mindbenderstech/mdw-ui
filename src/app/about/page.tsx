@@ -15,7 +15,7 @@ const About = () => {
           {/* Left Section */}
           <div className="space-y-6">
             <p className="text-lg text-gray-700">
-              At **Headliness**, we bring you the latest stories from across the world, focusing on essential news that matters most. Whether you're a busy professional or simply someone who values staying informed, we deliver news in a concise and impactful way.
+              At **Headliness**, we bring you the latest stories from across the world, focusing on essential news that matters most. Whether you&apos;re a busy professional or simply someone who values staying informed, we deliver news in a concise and impactful way.
             </p>
 
             <p className="text-lg text-gray-700">
@@ -23,7 +23,7 @@ const About = () => {
             </p>
 
             <p className="text-lg text-gray-700">
-              With **multiple language support**, we ensure that Headliness delivers content that speaks to a diverse, global audience. Whether you're reading in English, Hindi, Marathi, or any of our supported languages, we keep you connected to the world.
+              With **multiple language support**, we ensure that Headliness delivers content that speaks to a diverse, global audience. Whether you&apos;re reading in English, Hindi, Marathi, or any of our supported languages, we keep you connected to the world.
             </p>
           </div>
 

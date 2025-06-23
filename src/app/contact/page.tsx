@@ -8,7 +8,7 @@ const Contact = () => {
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-teal-700">Contact Us</h1>
           <p className="mt-4 text-xl text-gray-600">
-            We'd love to hear from you! Whether you have a question, feedback, or just want to connect, feel free to reach out.
+            We&apos;d love to hear from you! Whether you have a question, feedback, or just want to connect, feel free to reach out.
           </p>
         </div>
 
@@ -98,7 +98,7 @@ const Contact = () => {
         {/* Footer Message */}
         <div className="mt-16 text-center">
           <p className="text-lg text-gray-600">
-            Thank you for reaching out! We'll get back to you as soon as possible.
+            Thank you for reaching out! We&apos;ll get back to you as soon as possible.
           </p>
         </div>
       </div>

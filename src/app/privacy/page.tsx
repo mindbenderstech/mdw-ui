@@ -8,7 +8,7 @@ const Privacy = () => {
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-teal-700">Privacy Policy</h1>
           <p className="mt-3 text-lg text-gray-600">
-            At <strong>Headliness</strong>, your trust matters. Here's how we handle your data.
+            At <strong>Headliness</strong>, your trust matters. Here&apos;s how we handle your data.
           </p>
         </div>
 
