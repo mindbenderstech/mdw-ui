@@ -20,7 +20,7 @@ type Article = {
 
 export default function CategoryPage() {
     const params = useParams() as { category: string, language: string };  // ✅ access category and language from URL
-    const { category, language } = params;
+    const { category } = params;
 
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
