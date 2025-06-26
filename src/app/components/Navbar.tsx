@@ -32,8 +32,8 @@ const NavBar = () => {
           <Link href={`/category/entertainment/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Entertainment</Link>
           <Link href={`/category/sports/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Sports</Link>
           <Link href={`/category/crime/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Crime</Link>
-          <Link href={`/category/india/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Country</Link>
           <Link href={`/category/politics/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Politics</Link>
+          <Link href={`/category/astro/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Spiritual</Link>
         </div>
 
         {/* Right side: Search, Login, Language Selector */}
@@ -99,8 +99,8 @@ const NavBar = () => {
             <Link href={`/category/entertainment/${language}`} className="hover:text-blue-600">Entertainment</Link>
             <Link href={`/category/sports/${language}`} className="hover:text-blue-600">Sports</Link>
             <Link href={`/category/crime/${language}`} className="hover:text-blue-600">Crime</Link>
-            <Link href={`/category/india/${language}`} className="hover:text-blue-600">Country</Link>
             <Link href={`/category/politics/${language}`} className="hover:text-blue-600">Politics</Link>
+            <Link href={`/category/astro/${language}`} className="hover:text-blue-600">Spiritual</Link>
           </div>
         </div>
       )}
