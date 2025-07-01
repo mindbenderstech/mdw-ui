@@ -21,15 +21,21 @@ interface Article {
 const Home: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const { language } = useLanguage(); // ✅ Use language from context
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticles = async () => {
       const fetchedArticles = await getAllArticles(language); // ✅ Pass language
       setArticles(fetchedArticles);
+      setLoading(false);
     };
 
     fetchArticles();
   }, [language]); // ✅ Rerun when language changes
+
+  if (loading) {
+    return <h2 className='mt-20'>Loading articles...</h2>;
+  }
 
   if (!articles.length) return <h2 className='mt-20'>No articles found.</h2>;
 
@@ -224,7 +230,7 @@ const Home: React.FC = () => {
       </div>
   
       {/* RIGHT: Trending News Section */}
-      <div className="w-[30%] space-y-2">
+      <div className="w-[30%] space-y-2 sm:block hidden">
         <h2 className="text-xl font-bold text-white mt-12 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
         {trendingArticles.map((article) => (
           <Link

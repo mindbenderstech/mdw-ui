@@ -18,16 +18,16 @@ const NavBar = () => {
 
   return (
     <nav className="bg-teal-700 border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
-      <div className="max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          <img 
-            src="/images/headliness navbar logo.png"
-            alt="Headliness Logo"
-            className="w-40 h-17 py-1 mr-6 object-contain"  
+      <div className="max-w-7xl px-4 flex items-center justify-between h-16">
+        <img
+          src="/images/headliness navbar logo.png"
+          alt="Headliness Logo"
+          className="md:w-40 h-17 py-1 mr-6 object-contain sm:block w-20 h-15"
         />
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 text-sm font-semibold text-white uppercase tracking-wide ml-6">
-          <Link href="/" className="hover:bg-white hover:text-black px-2 py-2 rounded ml-6">Home</Link>          
+          <Link href="/" className="hover:bg-white hover:text-black px-2 py-2 rounded ml-6">Home</Link>
           <Link href={`/category/business/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded ml-3">Business</Link>
           <Link href={`/category/entertainment/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Entertainment</Link>
           <Link href={`/category/sports/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded">Sports</Link>
@@ -38,17 +38,16 @@ const NavBar = () => {
 
         {/* Right side: Search, Login, Language Selector */}
         <div className="flex items-center space-x-4">
-          <div className="relative">
+          <div className="relative hidden sm:block md:block lg:block xl:block">
             <input
               type="text"
               placeholder="Search..."
-              className="ml-4 px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-white"
+              className="ml-4 px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-white w-24 sm:w-32 md:w-48 lg:w-48 xl:w-48"
             />
             <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-white hover:bg-indigo-800 p-1 rounded focus:outline-none">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 10-7 7 7 7 0 007-7z" />
               </svg>
-
             </button>
           </div>
 
@@ -61,7 +60,7 @@ const NavBar = () => {
             <select
               value={language}
               onChange={handleLanguageChange}
-              className="bg-teal-600 text-white px-4 py-2 rounded-md shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ease-in-out duration-200"
+              className="bg-teal-600 text-white px-2 py-2 rounded-md shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all ease-in-out duration-200"
             >
               {availableLanguages.map((lang) => (
                 <option key={lang} value={lang}>
