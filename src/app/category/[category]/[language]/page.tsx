@@ -55,47 +55,47 @@ export default function CategoryPage() {
     const trendingArticles = getRandomArticles(5);
 
     return (
-        <div className="flex gap-6 px-6">
+        <div className="flex flex-col sm:flex-row gap-6 px-6 ">
             {/* LEFT: Category Content (70%) */}
-            <div className="w-[70%] mr-10 space-y-4 mt-20">
+            <div className="w-full sm:w-[70%] space-y-4 mt-20">
                 <h1 className="text-2xl font-bold mb-4 capitalize underline">{category} News</h1>
                 {loading ? (
                     <p>Loading...</p>
                 ) : articles.length === 0 ? (
                     <p>No articles found.</p>
                 ) : (
-                    <ul className="space-y-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-1 gap-6">
                         {articles.map((article) => (
-                            <li key={article.unique_id_url} className="pb-4">
-                                <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
+                            <div key={article.unique_id_url} className="pb-4">
+                                <h2 className="sm:text-lg font-semibold mb-2 truncate">{article.title}</h2>
                                 <div className="flex flex-col md:flex-row gap-4">
                                     {article.image_path && (
                                         <img
                                             src={article.image_path}
                                             alt={article.title}
-                                            className="w-full md:w-1/2 max-h-60 object-cover"
+                                            className="w-full md:w-1/2 max-h-60 object-cover rounded-lg shadow-md"
                                         />
                                     )}
                                     <div className="flex flex-col justify-between md:w-1/2">
-                                        <p className="text-gray-700 mt-2">{article.article_detail.slice(0, 200)}...</p>
-                                        <p className="text-black">{article.article_date}</p>
-                                        
+                                        <p className="text-gray-700 mt-2 text-sm">{article.article_detail.slice(0, 200)}...</p>
+                                        <p className="text-black text-xs">{article.article_date}</p>
+
                                         <a
                                             href={`/news/${currentLanguage}/${article.unique_id_url}`}
-                                            className="inline-block mt-4 ml-45 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
+                                            className="inline-block mt-4 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
                                         >
                                             Read More
                                         </a>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 )}
             </div>
 
             {/* RIGHT: Trending News (30%) */}
-            <div className="w-[30%] space-y-4 mt-13">
+            <div className="w-full sm:w-[30%] space-y-4 mt-13 sm:block hidden">
                 <h2 className="text-xl font-bold text-white mt-10 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
                 {trendingArticles.map((article) => (
                     <a
@@ -108,7 +108,7 @@ export default function CategoryPage() {
                             alt={article.title}
                             className="w-full h-50 object-cover rounded mb-2"
                         />
-                        <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
+                        <h3 className="text-sm font-semibold text-gray-800 truncate">{article.title}</h3>
                         <p className="text-xs text-gray-500">{article.article_date}</p>
                     </a>
                 ))}

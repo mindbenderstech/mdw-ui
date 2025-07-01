@@ -12,6 +12,10 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value);
   };
@@ -94,12 +98,13 @@ const NavBar = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-md">
           <div className="flex flex-col space-y-4 p-4 text-sm font-semibold uppercase">
-            <Link href={`/category/business/${language}`} className="hover:text-blue-600">Business</Link>
-            <Link href={`/category/entertainment/${language}`} className="hover:text-blue-600">Entertainment</Link>
-            <Link href={`/category/sports/${language}`} className="hover:text-blue-600">Sports</Link>
-            <Link href={`/category/crime/${language}`} className="hover:text-blue-600">Crime</Link>
-            <Link href={`/category/politics/${language}`} className="hover:text-blue-600">Politics</Link>
-            <Link href={`/category/astro/${language}`} className="hover:text-blue-600">Spiritual</Link>
+            <Link href="/" className="hover:text-blue-600" onClick={closeMenu}>Home</Link>
+            <Link href={`/category/business/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Business</Link>
+            <Link href={`/category/entertainment/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Entertainment</Link>
+            <Link href={`/category/sports/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Sports</Link>
+            <Link href={`/category/crime/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Crime</Link>
+            <Link href={`/category/politics/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Politics</Link>
+            <Link href={`/category/astro/${language}`} className="hover:text-blue-600" onClick={closeMenu}>Spiritual</Link>
           </div>
         </div>
       )}

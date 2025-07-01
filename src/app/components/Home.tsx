@@ -1,9 +1,11 @@
+// app/components/Home.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { getAllArticles } from '../../utils/api';
 import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageContext'; // ✅ Import context
+import { useLanguage } from '@/context/LanguageContext';
+import SwipeCarousel from './SwipeCarousel';
 
 interface Article {
   id: number;
@@ -33,10 +35,7 @@ const Home: React.FC = () => {
     fetchArticles();
   }, [language]); // ✅ Rerun when language changes
 
-  if (loading) {
-    return <h2 className='mt-20'>Loading articles...</h2>;
-  }
-
+  if (loading) return <h2 className='mt-20'>Loading articles...</h2>;
   if (!articles.length) return <h2 className='mt-20'>No articles found.</h2>;
 
   const latestArticle = articles[0];
@@ -48,16 +47,66 @@ const Home: React.FC = () => {
 
   const trendingArticles = getRandomArticles(5);
 
+  const section = (title: string, keyword: string) => {
+    const matched = articles.filter(a => a.news_source_url?.toLowerCase().includes(keyword));
+    if (!matched.length) return null;
+    const [featured, ...rest] = matched;
+
+    return (
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold text-black underline p-1">{title}</h2>
+        <div className="flex gap-4 sm:flex-row flex-col">
+          <Link
+            href={`/news/${language}/${featured.unique_id_url}`}
+            className="w-full sm:w-1/2 block group mt-4"
+          >
+            <img
+              src={featured.image_path}
+              alt={featured.title}
+              className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
+              style={{ maxHeight: '400px' }}
+            />
+            <p className="text-sm text-gray-600 mb-2">{featured.article_date}</p>
+            <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
+              {featured.title}
+            </h2>
+            <p className="text-md text-gray-500 italic">{featured.slug}</p>
+          </Link>
+
+          <div className="w-full sm:hidden">
+            <SwipeCarousel articles={rest.slice(0, 4)} language={language} slidesPerViewMobile={2} />
+          </div>
+
+          <div className="w-1/2 grid grid-cols-1 gap-4 hidden sm:grid">
+            {rest.slice(0, 4).map((article) => (
+              <Link
+                key={article.id}
+                href={`/news/${language}/${article.unique_id_url}`}
+                className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
+              >
+                <img
+                  src={article.image_path}
+                  alt={article.title}
+                  className="w-35 h-20 mt-2 object-cover rounded"
+                />
+                <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
+                  {article.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="flex gap-2 px-5 mt-10">
-      {/* LEFT: Main News Section (70%) */}
-      <div className="w-[70%] space-y-4 mt-10">
-        <div className="flex gap-4">
-          {/* Featured Article */}
+    <div className="flex flex-col sm:flex-row gap-2 px-5 mt-10">
+      <div className="w-full sm:w-[70%] space-y-4 mt-10">
+        <div className="flex gap-4 sm:flex-row flex-col">
           <Link
             href={`/news/${language}/${latestArticle.unique_id_url}`}
-            className="w-1/2 block group mt-3"
+            className="w-full sm:w-1/2 block group mt-3"
           >
             <img
               src={latestArticle.image_path}
@@ -71,9 +120,12 @@ const Home: React.FC = () => {
             </h2>
             <p className="text-md text-gray-500 italic">{latestArticle.slug}</p>
           </Link>
-  
-          {/* Next Articles */}
-          <div className="w-1/2 grid grid-cols-1 gap-2">
+
+          <div className="w-full sm:hidden">
+            <SwipeCarousel articles={nextArticles} language={language} slidesPerViewMobile={2} />
+          </div>
+
+          <div className="w-1/2 grid grid-cols-1 gap-2 hidden sm:grid">
             {nextArticles.map((article) => (
               <Link
                 key={article.id}
@@ -92,145 +144,13 @@ const Home: React.FC = () => {
             ))}
           </div>
         </div>
-  
-        {/* Sports News */}
-        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Sports News</h2>
-        <div className="flex gap-4">
-          {articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0] && (
-            <Link
-              href={`/news/${language}/${articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].unique_id_url}`}
-              className="w-1/2 block group mt-4"
-            >
-              <img
-                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].image_path}
-                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].title}
-                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-                style={{ maxHeight: '400px' }}
-              />
-              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].article_date}</p>
-              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-                {articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].title}
-              </h2>
-              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('sports'))[0].slug}</p>
-            </Link>
-          )}
-  
-          <div className="w-1/2 grid grid-cols-1 gap-4">
-            {articles
-              .filter(a => a.news_source_url?.toLowerCase().includes('sports'))
-              .slice(1, 5)
-              .map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/news/${language}/${article.unique_id_url}`}
-                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-                >
-                  <img
-                    src={article.image_path}
-                    alt={article.title}
-                    className="w-35 h-20 mt-2 object-cover rounded"
-                  />
-                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-                    {article.title}
-                  </h3>
-                </Link>
-              ))}
-          </div>
-        </div>
-  
-        {/* Crime News */}
-        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Crime News</h2>
-        <div className="flex gap-4">
-          {articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0] && (
-            <Link
-              href={`/news/${language}/${articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].unique_id_url}`}
-              className="w-1/2 block group mt-4"
-            >
-              <img
-                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].image_path}
-                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].title}
-                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-                style={{ maxHeight: '400px' }}
-              />
-              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].article_date}</p>
-              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-                {articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].title}
-              </h2>
-              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('crime'))[0].slug}</p>
-            </Link>
-          )}
-  
-          <div className="w-1/2 grid grid-cols-1 gap-4">
-            {articles
-              .filter(a => a.news_source_url?.toLowerCase().includes('crime'))
-              .slice(1, 5)
-              .map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/news/${language}/${article.unique_id_url}`}
-                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-                >
-                  <img
-                    src={article.image_path}
-                    alt={article.title}
-                    className="w-35 h-20 mt-2 object-cover rounded"
-                  />
-                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-                    {article.title}
-                  </h3>
-                </Link>
-              ))}
-          </div>
-        </div>
 
-        {/*Entertainment News */}
-        <h2 className="text-2xl font-bold text-black underline mt-10 p-1">Entertainment News</h2>
-        <div className="flex gap-4">
-          {articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0] && (
-            <Link
-              href={`/news/${language}/${articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].unique_id_url}`}
-              className="w-1/2 block group mt-4"
-            >
-              <img
-                src={articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].image_path}
-                alt={articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].title}
-                className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
-                style={{ maxHeight: '400px' }}
-              />
-              <p className="text-sm text-gray-600 mb-2">{articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].article_date}</p>
-              <h2 className="text-2xl font-bold text-gray-900 group-hover:text-indigo-700">
-                {articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].title}
-              </h2>
-              <p className="text-md text-gray-500 italic">{articles.filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))[0].slug}</p>
-            </Link>
-          )}
-  
-          <div className="w-1/2 grid grid-cols-1 gap-4">
-            {articles
-              .filter(a => a.news_source_url?.toLowerCase().includes('entertainment'))
-              .slice(1, 5)
-              .map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/news/${language}/${article.unique_id_url}`}
-                  className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
-                >
-                  <img
-                    src={article.image_path}
-                    alt={article.title}
-                    className="w-35 h-20 mt-2 object-cover rounded"
-                  />
-                  <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
-                    {article.title}
-                  </h3>
-                </Link>
-              ))}
-          </div>
-        </div>
+        {section('Sports News', 'sports')}
+        {section('Crime News', 'crime')}
+        {section('Entertainment News', 'entertainment')}
       </div>
-  
-      {/* RIGHT: Trending News Section */}
-      <div className="w-[30%] space-y-2 sm:block hidden">
+
+      <div className="w-full sm:w-[30%] space-y-2 md:block hidden">
         <h2 className="text-xl font-bold text-white mt-12 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
         {trendingArticles.map((article) => (
           <Link
@@ -250,7 +170,6 @@ const Home: React.FC = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Home;
