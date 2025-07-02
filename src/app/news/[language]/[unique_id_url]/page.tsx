@@ -3,12 +3,13 @@
 import { JSX } from "react/jsx-dev-runtime";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api'; // ✅ Update to use getArticleByUniqueIdUrl
+import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api';
+import SwipeCarousel from '../../../components/SwipeCarousel'; // Import the SwipeCarousel component
 
 interface Article {
   id: number;
   unique_id: string;
-  unique_id_url: string; // Use unique_id_url instead
+  unique_id_url: string;
   title: string;
   image_path: string;
   news_source_url: string;
@@ -61,13 +62,13 @@ export default function ArticleDetailPage() {
 
   // Get 5 random articles (excluding the current article)
   const trendingArticles = getRandomArticles(
-    allArticles.filter((a) => a.unique_id_url !== unique_id_url),  // Use unique_id_url for exclusion
+    allArticles.filter((a) => a.unique_id_url !== unique_id_url),
     5
   );
 
   // Function to extract the category from the news_source_url
   const extractCategoryFromUrl = (url: string) => {
-    const categoryMatch = url.match(/https?:\/\/[^/]+\/([^/]+)\//); // Extract the first part after the domain
+    const categoryMatch = url.match(/https?:\/\/[^/]+\/([^/]+)\//);
     return categoryMatch ? categoryMatch[1] : null;
   };
 
@@ -118,16 +119,14 @@ export default function ArticleDetailPage() {
     );
   }
 
-   return (
+  return (
     <div className="flex gap-6 px-6 mt-10">
       {/* LEFT: Article Content (70%) */}
-      <div className="w-[70%] space-y-4">
+      <div className="w-full sm:w-[70%] space-y-4">
         <div className="max-w-5xl mx-auto mt-8 p-4 md:p-8 bg-white rounded-2xl shadow-md">
-          <h1 className="text-4xl font-extrabold leading-snug mb-4 text-gray-900">{article.title}</h1>
+          <h1 className="md:text-2xl font-extrabold leading-snug mb-4 text-gray-900">{article.title}</h1>
 
-          <div className="text-l text-black mb-6">
-            <span className="font-medium"></span> {article.byline_author}
-          </div>
+          
 
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
@@ -137,18 +136,32 @@ export default function ArticleDetailPage() {
             />
           </div>
 
-          <article className="mt-6 text-lg leading-relaxed text-gray-800 whitespace-pre-line">
+          <div className="text-l text-black mt-5 font-semibold">
+            <span className="font-extrabold"></span> {article.byline_author}
+          </div>
+
+          <article className="mt-4 md:text-xl leading-relaxed text-gray-800 whitespace-pre-line">
             {formatArticleDetail(article.article_detail)}
           </article>
         </div>
 
-        {/* RELATED ARTICLES */}
+        {/* RELATED ARTICLES (Swipeable on Mobile) */}
         <h2 className="text-xl font-bold text-white mt-20 mb-2 p-1 rounded bg-blue-600">📚 Related News</h2>
-        <div className="grid grid-cols-3 gap-4"> {/* This will display related articles side by side */}
+        {/* Related Articles on Mobile as Swipeable */}
+        <div className="sm:hidden">
+          <SwipeCarousel
+            articles={relatedArticles}
+            language={language}
+            slidesPerViewMobile={2}  // Show 2 articles at a time
+          />
+        </div>
+
+        {/* Related Articles on Desktop */}
+        <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
           {relatedArticles.map((article) => (
             <a
               key={article.id}
-              href={`/news/${language}/${article.unique_id_url}`}  // Updated to use unique_id_url
+              href={`/news/${language}/${article.unique_id_url}`}
               className="block p-2 rounded hover:bg-gray-100 transition"
             >
               <img
@@ -164,12 +177,12 @@ export default function ArticleDetailPage() {
       </div>
 
       {/* RIGHT: Trending News (30%) */}
-      <div className="w-[30%] space-y-4">
+      <div className="w-full sm:w-[30%] space-y-4 sm:block hidden">
         <h2 className="text-xl font-bold text-white mt-20 mb-2 p-1 rounded bg-red-600">🔥 Trending News</h2>
         {trendingArticles.map((article) => (
           <a
             key={article.id}
-            href={`/news/${language}/${article.unique_id_url}`}  // Updated to use unique_id_url
+            href={`/news/${language}/${article.unique_id_url}`}
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img
