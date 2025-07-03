@@ -12,7 +12,7 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState('marathi');
+  const [language, setLanguage] = useState('hindi');
   const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
 
   useEffect(() => {
