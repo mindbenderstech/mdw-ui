@@ -4,7 +4,8 @@ import { JSX } from "react/jsx-dev-runtime";
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api';
-import SwipeCarousel from '../../../components/SwipeCarousel'; // Import the SwipeCarousel component
+import SwipeCarousel from '../../../components/SwipeCarousel';
+import Head from 'next/head';
 
 interface Article {
   id: number;
@@ -121,13 +122,45 @@ export default function ArticleDetailPage() {
 
   return (
     <div className="flex gap-6 px-6 mt-10">
+      <Head>
+        {/* SEO Meta Tags */}
+        <title>{article.title} - Headliness</title>
+        <meta name="description" content={article.article_detail.substring(0, 160)} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.article_detail.substring(0, 160)} />
+        <meta property="og:url" content={`https://www.headliness.com/news/${language}/${article.unique_id_url}`} />
+        <link rel="canonical" href={`https://www.headliness.com/news/${language}/${article.unique_id_url}`} />
+
+        {/* Structured Data (Schema.org) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": article.title,
+            "image": article.image_path,
+            "datePublished": article.article_date,
+            "author": {
+              "@type": "Person",
+              "name": article.byline_author
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Headliness",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.headliness.com/logo.png"
+              }
+            },
+            "url": `https://www.headliness.com/news/${language}/${article.unique_id_url}`
+          })}
+        </script>
+
+      </Head>
+
       {/* LEFT: Article Content (70%) */}
       <div className="w-full sm:w-[70%] space-y-4">
         <div className="max-w-5xl mx-auto mt-8 p-4 md:p-8 bg-white rounded-2xl shadow-md">
           <h1 className="md:text-2xl font-extrabold leading-snug mb-4 text-gray-900">{article.title}</h1>
-
-          
-
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
               src={article.image_path}
