@@ -124,12 +124,12 @@ export default function ArticleDetailPage() {
     <div className="flex gap-6 px-6 mt-10">
       <Head>
         {/* SEO Meta Tags */}
-        <title>{article.title} - Headliness</title>
+        <title>{article.title} - TheHeadlineWorld</title>
         <meta name="description" content={article.article_detail.substring(0, 160)} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.article_detail.substring(0, 160)} />
-        <meta property="og:url" content={`https://www.headliness.com/news/${language}/${article.unique_id_url}`} />
-        <link rel="canonical" href={`https://www.headliness.com/news/${language}/${article.unique_id_url}`} />
+        <meta property="og:url" content={`https://www.TheHeadlineWorld.com/news/${language}/${article.unique_id_url}`} />
+        <link rel="canonical" href={`https://www.TheHeadlineWorld.com/news/${language}/${article.unique_id_url}`} />
 
         {/* Structured Data (Schema.org) */}
         <script type="application/ld+json">
@@ -145,13 +145,13 @@ export default function ArticleDetailPage() {
             },
             "publisher": {
               "@type": "Organization",
-              "name": "Headliness",
+              "name": "TheHeadlineWorld",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.headliness.com/logo.png"
+                "url": "https://www.TheHeadlineWorld.com/logo.png"
               }
             },
-            "url": `https://www.headliness.com/news/${language}/${article.unique_id_url}`
+            "url": `https://www.TheHeadlineWorld.com/news/${language}/${article.unique_id_url}`
           })}
         </script>
 

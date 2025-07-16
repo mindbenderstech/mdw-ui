@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://api.headliness.com/sitemap.xml
+Sitemap: https://api.theheadlineworld.com/sitemap.xml

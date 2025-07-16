@@ -11,9 +11,9 @@ export default function Footer() {
     <footer className="bg-teal-700 text-white mt-10 pt-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 text-sm">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Headliness</h2>
+          <h2 className="text-2xl font-bold mb-2">TheHeadlineWorld</h2>
           <p className="text-gray-100 leading-relaxed">
-          Headliness is your gateway to fast, clear, and credible news from across World. We focus on delivering essential stories with clarity—stripped of fluff, packed with impact. Whether you&apos;re on the move or on a break, Media World keeps you informed without wasting your time.
+          TheHeadlineWorld is your gateway to fast, clear, and credible news from across World. We focus on delivering essential stories with clarity—stripped of fluff, packed with impact. Whether you&apos;re on the move or on a break, Media World keeps you informed without wasting your time.
           </p>
         </div>
 

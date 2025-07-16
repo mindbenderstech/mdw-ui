@@ -17,7 +17,7 @@ const Contact = () => {
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-teal-700">Get in Touch</h2>
             <p className="text-lg text-gray-700">
-              If you have any questions or would like to know more about **Headliness** and the news we provide, feel free to contact us!
+              If you have any questions or would like to know more about <strong>TheHeadlineWorld</strong> and the news we provide, feel free to contact us!
             </p>
 
             <div className="space-y-4">
@@ -25,14 +25,14 @@ const Contact = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" height="25px" viewBox="0 -960 960 960" width="30px" fill="#087775" className="mr-2">
                   <path d="M480-462 140-685v465h390v60H140q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v310h-60v-255L480-462Zm0-60 340-218H140l340 218ZM774-44l-42-42 73-74H590v-60h215l-74-74 43-42 146 146L774-44ZM140-685v499-244 4-314 55Z" />
                 </svg>
-                <p>Email: <a onClick={(e) => e.preventDefault()} href="mailto:support@headliness.com" className="text-teal-700 hover:underline">support@headliness.com</a></p>
+                <p>Email: <a onClick={(e) => e.preventDefault()} href="mailto:support@TheHeadlineWorld.com" className="text-teal-700 hover:underline">support@TheHeadlineWorld.com</a></p>
               </div>
               {/* Social Media Section */}
               <div className="flex items-center space-x-6  p-1 rounded-lg bg-teal-100 shadow-md">
                 <p className="text-lg font-semibold text-teal-700">Follow us on Social Media:</p>
                 <div className="flex space-x-6">
                   {/* Twitter Icon */}
-                  <a onClick={(e) => e.preventDefault()}  href="https://twitter.com/headliness" className="text-teal-700 hover:text-white hover:bg-teal-600 p-2 rounded-full transition-all duration-300 ml-10">
+                  <a onClick={(e) => e.preventDefault()}  href="https://twitter.com/TheHeadlineWorld" className="text-teal-700 hover:text-white hover:bg-teal-600 p-2 rounded-full transition-all duration-300 ml-10">
                     <svg  className="w-20 h-8 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M22 5.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.343 8.343 0 0 1-2.605.981A4.13 4.13 0 0 0 15.85 4a4.068 4.068 0 0 0-4.1 4.038c0 .31.035.618.105.919A11.705 11.705 0 0 1 3.4 4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 6.1 13.635a4.192 4.192 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 2 18.184 11.732 11.732 0 0 0 8.291 20 11.502 11.502 0 0 0 19.964 8.5c0-.177 0-.349-.012-.523A8.143 8.143 0 0 0 22 5.892Z" clipRule="evenodd" />
                     </svg>
@@ -40,7 +40,7 @@ const Contact = () => {
                   </a>
 
                   {/* Facebook Icon */}
-                  <a onClick={(e) => e.preventDefault()}  href="https://facebook.com/headliness" className="text-teal-700 hover:text-white hover:bg-teal-600 p-2 rounded-full transition-all duration-300 ml-10">
+                  <a onClick={(e) => e.preventDefault()}  href="https://facebook.com/TheHeadlineWorld" className="text-teal-700 hover:text-white hover:bg-teal-600 p-2 rounded-full transition-all duration-300 ml-10">
                     <svg className="w-20 h-8 text-blue-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clipRule="evenodd" />
                     </svg>

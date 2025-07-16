@@ -15,27 +15,27 @@ const Disclaimer = () => {
         {/* Content */}
         <div className="bg-white shadow-md rounded-lg p-8 space-y-6 text-gray-700 leading-relaxed text-lg">
           <p>
-            The content on <strong>Headliness</strong> is provided for general informational purposes only.
+            The content on <strong>TheHeadlineWorld</strong> is provided for general informational purposes only.
             While we strive for accuracy and timely reporting, we make no warranties of any kind regarding
             the completeness, reliability, or accuracy of any information displayed.
           </p>
 
           <p>
             Any action you take upon the information you find on this website is strictly at your own risk.
-            <strong> Headliness</strong> will not be liable for any losses or damages in connection with
+            <strong> TheHeadlineWorld</strong> will not be liable for any losses or damages in connection with
             the use of our website or the information provided therein.
           </p>
 
           <p>
             We feature news from a wide variety of sources and in multiple languages to reach our
             diverse audience. While we work diligently to ensure the integrity of the stories presented,
-            Headliness does not claim responsibility for the content published on external websites
+            TheHeadlineWorld does not claim responsibility for the content published on external websites
             linked from our platform.
           </p>
 
           <p>
             The opinions and views expressed in articles belong solely to their respective authors and do
-            not necessarily reflect those of Headliness or its team.
+            not necessarily reflect those of TheHeadlineWorld or its team.
           </p>
 
           <p>

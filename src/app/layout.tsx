@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Headliness',
-  description: 'Latest News from Headliness',
+  title: 'TheHeadlineWorld',
+  description: 'Latest News from TheHeadlineWorld',
   icons: {
     icon: '/images/favicon-32x32.png',
   },
