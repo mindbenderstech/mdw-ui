@@ -6,6 +6,7 @@ import { getAllArticles } from '../../utils/api';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import SwipeCarousel from './SwipeCarousel';
+import Head from 'next/head'; // Import Head for SEO meta tags and structured data
 
 interface Article {
   id: number;
@@ -62,7 +63,7 @@ const Home: React.FC = () => {
           >
             <img
               src={featured.image_path}
-              alt={featured.title}
+              alt={`Image related to ${featured.title}`}
               className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
               style={{ maxHeight: '400px' }}
             />
@@ -86,7 +87,7 @@ const Home: React.FC = () => {
               >
                 <img
                   src={article.image_path}
-                  alt={article.title}
+                  alt={`Image related to ${article.title}`}
                   className="w-35 h-20 mt-2 object-cover rounded"
                 />
                 <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
@@ -102,6 +103,27 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 px-5 mt-10">
+      <Head>
+        {/* SEO Meta Tags */}
+        <title>TheHeadlineWorld - Latest News and Articles</title>
+        <meta name="description" content="Get the latest headlines and in-depth articles on TheHeadlineWorld. Stay informed on news from sports, entertainment, crime, and more." />
+        <meta property="og:title" content="TheHeadlineWorld - Latest News and Articles" />
+        <meta property="og:description" content="Get the latest headlines and in-depth articles on TheHeadlineWorld. Stay informed on news from sports, entertainment, crime, and more." />
+        <meta property="og:url" content="https://www.theheadlineworld.com" />
+        <meta property="og:image" content="https://www.theheadlineworld.com/logo.png" />
+
+        {/* Structured Data (Organization Schema) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "TheHeadlineWorld",
+            "logo": "https://www.theheadlineworld.com/logo.png",
+            "url": "https://www.theheadlineworld.com"
+          })}
+        </script>
+      </Head>
+
       <div className="w-full sm:w-[70%] space-y-4 mt-10">
         <div className="flex gap-4 sm:flex-row flex-col">
           <Link
@@ -110,7 +132,7 @@ const Home: React.FC = () => {
           >
             <img
               src={latestArticle.image_path}
-              alt={latestArticle.title}
+              alt={`Image related to ${latestArticle.title}`}
               className="w-full h-auto object-cover rounded-lg group-hover:scale-101 transition-transform"
               style={{ maxHeight: '400px' }}
             />
@@ -134,7 +156,7 @@ const Home: React.FC = () => {
               >
                 <img
                   src={article.image_path}
-                  alt={article.title}
+                  alt={`Image related to ${article.title}`}
                   className="w-35 h-20 mt-2 object-cover rounded"
                 />
                 <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
@@ -160,7 +182,7 @@ const Home: React.FC = () => {
           >
             <img
               src={article.image_path}
-              alt={article.title}
+              alt={`Image related to ${article.title}`}
               className="w-full h-50 mt-2 object-cover rounded mb-2"
             />
             <h3 className="text-sm font-semibold text-gray-800 hover:text-indigo-700">{article.title}</h3>

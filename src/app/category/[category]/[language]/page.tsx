@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useLanguage } from '../../../../context/LanguageContext';  // Import the context for language
 import { API_BASE_URL } from '../../../../utils/api';
+import Head from 'next/head'; // Import Head for SEO meta tags and structured data
 
 type Article = {
     unique_id: string;
@@ -56,6 +57,41 @@ export default function CategoryPage() {
 
     return (
         <div className="flex flex-col sm:flex-row gap-6 px-6 ">
+            <Head>
+                {/* SEO Meta Tags */}
+                <title>{category.charAt(0).toUpperCase() + category.slice(1)} News - TheHeadlineWorld</title>
+                <meta
+                    name="description"
+                    content={`Read the latest news and articles about ${category} on TheHeadlineWorld. Stay updated on trending stories in the ${category} category.`}
+                />
+                <meta property="og:title" content={`${category.charAt(0).toUpperCase() + category.slice(1)} News - TheHeadlineWorld`} />
+                <meta property="og:description" content={`Read the latest news and articles about ${category} on TheHeadlineWorld.`} />
+                <meta property="og:url" content={`https://www.theheadlineworld.com/${category}`} />
+                <meta property="og:image" content="https://www.theheadlineworld.com/logo.png" />
+
+                {/* Structured Data (Schema for Category Page) */}
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebPage",
+                        "name": `${category.charAt(0).toUpperCase() + category.slice(1)} News - TheHeadlineWorld`,
+                        "url": `https://www.theheadlineworld.com/${category}`,
+                        "mainEntity": {
+                            "@type": "NewsArticle",
+                            "headline": `Latest ${category} News`,
+                            "publisher": {
+                                "@type": "Organization",
+                                "name": "TheHeadlineWorld",
+                                "logo": {
+                                    "@type": "ImageObject",
+                                    "url": "https://www.theheadlineworld.com/logo.png"
+                                }
+                            }
+                        }
+                    })}
+                </script>
+            </Head>
+
             {/* LEFT: Category Content (70%) */}
             <div className="w-full sm:w-[70%] space-y-4 mt-20">
                 <h1 className="text-2xl font-bold mb-4 capitalize underline">{category} News</h1>
@@ -72,7 +108,7 @@ export default function CategoryPage() {
                                     {article.image_path && (
                                         <img
                                             src={article.image_path}
-                                            alt={article.title}
+                                            alt={`Image related to ${article.title}`}
                                             className="w-full md:w-1/2 max-h-60 object-cover rounded-lg shadow-md"
                                         />
                                     )}
@@ -105,7 +141,7 @@ export default function CategoryPage() {
                     >
                         <img
                             src={article.image_path}
-                            alt={article.title}
+                            alt={`Trending news related to ${article.title}`}
                             className="w-full h-50 object-cover rounded mb-2"
                         />
                         <h3 className="text-sm font-semibold text-gray-800 truncate">{article.title}</h3>

@@ -164,7 +164,7 @@ export default function ArticleDetailPage() {
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
               src={article.image_path}
-              alt={article.title}
+              alt={`Image related to ${article.title}`}
               className="w-full object-cover max-h-[500px] transition-transform duration-300 hover:scale-105"
             />
           </div>
@@ -199,7 +199,7 @@ export default function ArticleDetailPage() {
             >
               <img
                 src={article.image_path}
-                alt={article.title}
+                alt={`Image related to ${article.title}`}
                 className="w-full h-50 object-cover rounded mb-2"
               />
               <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
@@ -220,7 +220,7 @@ export default function ArticleDetailPage() {
           >
             <img
               src={article.image_path}
-              alt={article.title}
+              alt={`Image related to ${article.title}`}
               className="w-full h-50 object-cover rounded mb-2"
             />
             <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
