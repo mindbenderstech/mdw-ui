@@ -130,6 +130,7 @@ export default function ArticleDetailPage() {
         <meta property="og:description" content={article.article_detail.substring(0, 160)} />
         <meta property="og:url" content={`https://www.TheHeadlineWorld.com/news/${language}/${article.unique_id_url}`} />
         <link rel="canonical" href={`https://www.TheHeadlineWorld.com/news/${language}/${article.unique_id_url}`} />
+        <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 
         {/* Structured Data (Schema.org) */}
         <script type="application/ld+json">
