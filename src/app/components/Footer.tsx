@@ -49,7 +49,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-blue-800 text-center py-4 text-xs text-gray-300">
-        © Implant Media Pvt. Ltd. | All rights reserved
+        © MindBendersTech Pvt. Ltd. | All rights reserved
       </div>
     </footer>
   );
