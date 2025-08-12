@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useLanguage } from '../../../../context/LanguageContext';  // Import the context for language
 import { API_BASE_URL } from '../../../../utils/api';
 import Head from 'next/head'; // Import Head for SEO meta tags and structured data
+import { toCdnUrl } from '../../../../utils/cdn';
 
 type Article = {
     unique_id: string;
@@ -107,8 +108,12 @@ export default function CategoryPage() {
                                 <div className="flex flex-col md:flex-row gap-4">
                                     {article.image_path && (
                                         <img
-                                            src={article.image_path}
+                                            src={toCdnUrl(article.image_path) || article.image_path}
                                             alt={`Image related to ${article.title}`}
+                                            loading="lazy"
+                                            decoding="async"
+                                            width={320}
+                                            height={180}
                                             className="w-full md:w-1/2 max-h-60 object-cover rounded-lg shadow-md"
                                         />
                                     )}
@@ -140,8 +145,12 @@ export default function CategoryPage() {
                         className="block p-2 rounded hover:bg-gray-100 transition"
                     >
                         <img
-                            src={article.image_path}
+                            src={toCdnUrl(article.image_path) || article.image_path}
                             alt={`Trending news related to ${article.title}`}
+                            loading="lazy"
+                            decoding="async"
+                            width={320}
+                            height={180}
                             className="w-full h-50 object-cover rounded mb-2"
                         />
                         <h3 className="text-sm font-semibold text-gray-800 truncate">{article.title}</h3>

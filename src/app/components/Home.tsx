@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import SwipeCarousel from './SwipeCarousel';
 import Head from 'next/head'; // Import Head for SEO meta tags and structured data
-
+import { toCdnUrl } from '../../utils/cdn';
 interface Article {
   id: number;
   title: string;
@@ -62,8 +62,13 @@ const Home: React.FC = () => {
             className="w-full sm:w-1/2 block group mt-4"
           >
             <img
-              src={featured.image_path}
+              src={toCdnUrl(featured.image_path) || featured.image_path}
               alt={`Image related to ${featured.title}`}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              width={1200}
+              height={675}
               className="w-full h-auto object-cover rounded-lg mb-4 group-hover:scale-101 transition-transform"
               style={{ maxHeight: '400px' }}
             />
@@ -86,8 +91,12 @@ const Home: React.FC = () => {
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
-                  src={article.image_path}
+                  src={toCdnUrl(article.image_path) || article.image_path}
                   alt={`Image related to ${article.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  width={320}
+                  height={180}
                   className="w-35 h-20 mt-2 object-cover rounded"
                 />
                 <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
@@ -131,8 +140,12 @@ const Home: React.FC = () => {
             className="w-full sm:w-1/2 block group mt-3"
           >
             <img
-              src={latestArticle.image_path}
+              src={toCdnUrl(latestArticle.image_path) || latestArticle.image_path}
               alt={`Image related to ${latestArticle.title}`}
+              loading="lazy"
+              decoding="async"
+              width={1200}
+              height={675}
               className="w-full h-auto object-cover rounded-lg group-hover:scale-101 transition-transform"
               style={{ maxHeight: '400px' }}
             />
@@ -155,8 +168,12 @@ const Home: React.FC = () => {
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
-                  src={article.image_path}
+                  src={toCdnUrl(article.image_path) || article.image_path}
                   alt={`Image related to ${article.title}`}
+                  loading="lazy"
+                  decoding="async"
+                  width={320}
+                  height={180}
                   className="w-35 h-20 mt-2 object-cover rounded"
                 />
                 <h3 className="text-md font-semibold text-gray-800 hover:text-indigo-600">
@@ -181,8 +198,12 @@ const Home: React.FC = () => {
             className="block rounded hover:bg-gray-100 p-1 transition"
           >
             <img
-              src={article.image_path}
+              src={toCdnUrl(article.image_path) || article.image_path}
               alt={`Image related to ${article.title}`}
+              loading="lazy"
+              decoding="async"
+              width={320}
+              height={180}
               className="w-full h-50 mt-2 object-cover rounded mb-2"
             />
             <h3 className="text-sm font-semibold text-gray-800 hover:text-indigo-700">{article.title}</h3>

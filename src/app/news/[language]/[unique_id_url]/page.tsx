@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api';
 import SwipeCarousel from '../../../components/SwipeCarousel';
 import Head from 'next/head';
+import { toCdnUrl } from '../../../../utils/cdn';
 
 interface Article {
   id: number;
@@ -164,8 +165,13 @@ export default function ArticleDetailPage() {
           <h1 className="md:text-2xl font-extrabold leading-snug mb-4 text-gray-900">{article.title}</h1>
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
-              src={article.image_path}
+              src={toCdnUrl(article.image_path) || article.image_path}
               alt={`Image related to ${article.title}`}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              width={1200}
+              height={675}
               className="w-full object-cover max-h-[500px] transition-transform duration-300 hover:scale-105"
             />
           </div>
@@ -199,8 +205,12 @@ export default function ArticleDetailPage() {
               className="block p-2 rounded hover:bg-gray-100 transition"
             >
               <img
-                src={article.image_path}
+                src={toCdnUrl(article.image_path) || article.image_path}
                 alt={`Image related to ${article.title}`}
+                loading="lazy"
+                decoding="async"
+                width={1200}
+                height={675}
                 className="w-full h-50 object-cover rounded mb-2"
               />
               <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>
@@ -220,8 +230,12 @@ export default function ArticleDetailPage() {
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img
-              src={article.image_path}
+              src={toCdnUrl(article.image_path) || article.image_path}
               alt={`Image related to ${article.title}`}
+              loading="lazy"
+              decoding="async"
+              width={320}
+              height={180}
               className="w-full h-50 object-cover rounded mb-2"
             />
             <h3 className="text-sm font-semibold text-gray-800">{article.title}</h3>

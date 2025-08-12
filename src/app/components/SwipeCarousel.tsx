@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import Link from 'next/link';
+import { toCdnUrl } from '../../utils/cdn';
 
 interface Article {
   id: number;
@@ -40,9 +41,13 @@ const SwipeCarousel: React.FC<Props> = ({ articles, language, slidesPerViewMobil
           <Link href={`/news/${language}/${article.unique_id_url}`}>
             <div className="p-2">
               <img
-                src={article.image_path}
+                src={toCdnUrl(article.image_path) || article.image_path}
                 alt={article.title}
-                className="w-full h-30 object-cover rounded"
+                loading="lazy"
+                decoding="async"
+                width={400}
+                height={225}
+                className="w-full h-auto object-cover rounded"
               />
               <h3 className="text-md font-semibold text-gray-800 mt-2 hover:text-indigo-600">{article.title}</h3>
               <p className="text-xs text-gray-500">{article.article_date}</p>
