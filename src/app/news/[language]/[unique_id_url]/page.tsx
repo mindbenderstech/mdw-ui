@@ -7,6 +7,7 @@ import { getArticleByUniqueIdUrl, getAllArticles } from '../../../../utils/api';
 import SwipeCarousel from '../../../components/SwipeCarousel';
 import Head from 'next/head';
 import { toCdnUrl } from '../../../../utils/cdn';
+import DOMPurify from 'dompurify';
 
 interface Article {
   id: number;
@@ -86,8 +87,27 @@ export default function ArticleDetailPage() {
     )
     .slice(0, 3); // Limit to 3 related articles
 
-  function formatArticleDetail(rawText: string): JSX.Element {
-    // Bold the text before the first colon
+  // --- Rendering helpers ---
+  function hasHtmlTags(text: string) {
+    // Detect common tags we care about
+    return /<\s*(p|h1|h2|h3|h4|h5|h6|ul|ol|li|blockquote|strong|em|span|br|a|img)\b/i.test(text);
+  }
+
+  function renderArticleDetail(rawText: string): JSX.Element {
+    if (!rawText) return <></>;
+
+    if (hasHtmlTags(rawText)) {
+      // Already HTML → sanitize and render
+      const cleanHtml = DOMPurify.sanitize(rawText, {
+        ALLOWED_TAGS: [
+          'p','h1','h2','h3','h4','h5','h6','strong','em','span','a','ul','ol','li','blockquote','br','img'
+        ],
+        ALLOWED_ATTR: ['href','title','target','rel','class','id','src','alt']
+      });
+      return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
+    }
+
+    // Plain text → optional bold before first colon + paragraphs
     const colonIndex = rawText.indexOf(':');
     let formatted = rawText;
     if (colonIndex !== -1) {
@@ -96,17 +116,18 @@ export default function ArticleDetailPage() {
       formatted = `<strong>${before}</strong>${after}`;
     }
 
-    // Paragraph break after every 5 periods
-    const sentences = formatted.split('.');
-    const paragraphs: string[] = [];
-    for (let i = 0; i < sentences.length; i += 5) {
-      const group = sentences.slice(i, i + 5).join('.').trim();
-      if (group) {
-        paragraphs.push(`<p>${group}.</p>`);
-      }
-    }
+    // Split into paragraphs by double newlines first, otherwise by sentence-ish endings.
+    const parts = formatted.includes('\n\n')
+      ? formatted.split(/\n{2,}/)
+      : formatted.split(/(?<=[.!?])\s+/);
 
-    return <div dangerouslySetInnerHTML={{ __html: paragraphs.join('') }} className="space-y-4" />;
+    const html = parts
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(s => `<p>${s}</p>`)
+      .join('');
+
+    return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />;
   }
 
   if (loading) {
@@ -180,8 +201,8 @@ export default function ArticleDetailPage() {
             <span className="font-extrabold"></span> {article.byline_author}
           </div>
 
-          <article className="mt-4 md:text-xl leading-relaxed text-gray-800 whitespace-pre-line">
-            {formatArticleDetail(article.article_detail)}
+          <article className="mt-4 md:text-xl leading-relaxed text-gray-800">
+            {renderArticleDetail(article.article_detail)}
           </article>
         </div>
 

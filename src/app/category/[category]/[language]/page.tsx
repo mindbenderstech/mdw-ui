@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useLanguage } from '../../../../context/LanguageContext';  // Import the context for language
+import { useLanguage } from '../../../../context/LanguageContext';
 import { API_BASE_URL } from '../../../../utils/api';
 import Head from 'next/head'; // Import Head for SEO meta tags and structured data
 import { toCdnUrl } from '../../../../utils/cdn';
+import DOMPurify from 'dompurify';
 
 type Article = {
     unique_id: string;
@@ -31,16 +32,14 @@ export default function CategoryPage() {
     useEffect(() => {
         async function fetchCategoryArticles() {
             try {
-                setLoading(true)
+                setLoading(true);
                 const res = await fetch(
                     `${API_BASE_URL}/api/articles/category/${category}?language=${currentLanguage}`
                 );
                 const data = await res.json();
-                if (data.articles) {
-                    setArticles(data.articles);
-                }
-            } catch (error) {
-                console.error('Error fetching category articles:', error);
+                if (data.articles) setArticles(data.articles);
+            } catch (err) {
+                console.error('Error fetching category articles:', err);
             } finally {
                 setLoading(false);
             }
@@ -54,7 +53,15 @@ export default function CategoryPage() {
         return shuffled.slice(0, count);
     };
 
-    const trendingArticles = getRandomArticles(5);
+    const trendingArticles = useMemo(() => getRandomArticles(5), [articles]);
+
+    // --- helpers ---
+    const toPlainText = (html: string) =>
+        // DOMPurify with no allowed tags/attrs => returns only text content
+        DOMPurify.sanitize(html || '', { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+
+    const truncate = (text: string, n: number) =>
+        text.length > n ? text.slice(0, n - 1).trimEnd() + '…' : text;
 
     return (
         <div className="flex flex-col sm:flex-row gap-6 px-6 ">
@@ -71,26 +78,29 @@ export default function CategoryPage() {
                 <meta property="og:image" content="https://www.theheadlineworld.com/logo.png" />
 
                 {/* Structured Data (Schema for Category Page) */}
-                <script type="application/ld+json">
-                    {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "WebPage",
-                        "name": `${category.charAt(0).toUpperCase() + category.slice(1)} News - TheHeadlineWorld`,
-                        "url": `https://www.theheadlineworld.com/${category}`,
-                        "mainEntity": {
-                            "@type": "NewsArticle",
-                            "headline": `Latest ${category} News`,
-                            "publisher": {
-                                "@type": "Organization",
-                                "name": "TheHeadlineWorld",
-                                "logo": {
-                                    "@type": "ImageObject",
-                                    "url": "https://www.theheadlineworld.com/logo.png"
-                                }
-                            }
-                        }
-                    })}
-                </script>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'WebPage',
+                            name: `${category.charAt(0).toUpperCase() + category.slice(1)} News - TheHeadlineWorld`,
+                            url: `https://www.theheadlineworld.com/${category}`,
+                            mainEntity: {
+                                '@type': 'NewsArticle',
+                                headline: `Latest ${category} News`,
+                                publisher: {
+                                    '@type': 'Organization',
+                                    name: 'TheHeadlineWorld',
+                                    logo: {
+                                        '@type': 'ImageObject',
+                                        url: 'https://www.theheadlineworld.com/logo.png',
+                                    },
+                                },
+                            },
+                        }),
+                    }}
+                />
             </Head>
 
             {/* LEFT: Category Content (70%) */}
@@ -102,35 +112,38 @@ export default function CategoryPage() {
                     <p>No articles found.</p>
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-1 gap-6">
-                        {articles.map((article) => (
-                            <div key={article.unique_id_url} className="pb-4">
-                                <h2 className="sm:text-lg font-semibold mb-2 truncate">{article.title}</h2>
-                                <div className="flex flex-col md:flex-row gap-4">
-                                    {article.image_path && (
-                                        <img
-                                            src={toCdnUrl(article.image_path) || article.image_path}
-                                            alt={`Image related to ${article.title}`}
-                                            loading="lazy"
-                                            decoding="async"
-                                            width={320}
-                                            height={180}
-                                            className="w-full md:w-1/2 max-h-60 object-cover rounded-lg shadow-md"
-                                        />
-                                    )}
-                                    <div className="flex flex-col justify-between md:w-1/2">
-                                        <p className="text-gray-700 mt-2 text-sm">{article.article_detail.slice(0, 200)}...</p>
-                                        <p className="text-black text-xs">{article.article_date}</p>
+                        {articles.map((article) => {
+                            const snippet = truncate(toPlainText(article.article_detail), 200);
+                            return (
+                                <div key={article.unique_id_url} className="pb-4">
+                                    <h2 className="sm:text-lg font-semibold mb-2 truncate">{article.title}</h2>
+                                    <div className="flex flex-col md:flex-row gap-4">
+                                        {article.image_path && (
+                                            <img
+                                                src={toCdnUrl(article.image_path) || article.image_path}
+                                                alt={`Image related to ${article.title}`}
+                                                loading="lazy"
+                                                decoding="async"
+                                                width={320}
+                                                height={180}
+                                                className="w-full md:w-1/2 max-h-60 object-cover rounded-lg shadow-md"
+                                            />
+                                        )}
+                                        <div className="flex flex-col justify-between md:w-1/2">
+                                            <p className="text-gray-700 mt-2 text-sm">{snippet}</p>
+                                            <p className="text-black text-xs">{article.article_date}</p>
 
-                                        <a
-                                            href={`/news/${currentLanguage}/${article.unique_id_url}`}
-                                            className="inline-block mt-4 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
-                                        >
-                                            Read More
-                                        </a>
+                                            <a
+                                                href={`/news/${currentLanguage}/${article.unique_id_url}`}
+                                                className="inline-block mt-4 text-white font-medium bg-indigo-800 px-4 py-2 rounded w-fit hover:bg-indigo-600"
+                                            >
+                                                Read More
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>
