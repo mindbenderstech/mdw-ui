@@ -12,6 +12,7 @@
     "axios": "^1.8.4",
     "dompurify": "^3.2.6",
     "express": "^5.1.0",
+    "isomorphic-dompurify": "^2.26.0",
     "next": "15.2.5",
     "next-i18next": "^15.4.2",
     "react": "^19.0.0",
