@@ -114,10 +114,19 @@ const Home: React.FC = () => {
     <div className="flex flex-col sm:flex-row gap-2 px-5 mt-10">
       <Head>
         {/* SEO Meta Tags */}
-        <title>TheHeadlineWorld - Latest News and Articles</title>
-        <meta name="description" content="Get the latest headlines and in-depth articles on TheHeadlineWorld. Stay informed on news from sports, entertainment, crime, and more." />
-        <meta property="og:title" content="TheHeadlineWorld - Latest News and Articles" />
-        <meta property="og:description" content="Get the latest headlines and in-depth articles on TheHeadlineWorld. Stay informed on news from sports, entertainment, crime, and more." />
+        <title>The Headline World - Latest News, Articles, and More on Headlines</title>
+        <meta
+          name="description"
+          content="The Headline World is your source for the latest headlines and articles across various categories including sports, crime, entertainment, and more. Stay updated with breaking news on TheHeadlineWorld."
+        />
+        <meta
+          property="og:title"
+          content="The Headline World - Latest News and Articles on Headlines"
+        />
+        <meta
+          property="og:description"
+          content="The Headline World is your source for the latest headlines and articles across various categories including sports, crime, entertainment, and more."
+        />
         <meta property="og:url" content="https://www.theheadlineworld.com" />
         <meta property="og:image" content="https://www.theheadlineworld.com/logo.png" />
 
@@ -126,9 +135,10 @@ const Home: React.FC = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "TheHeadlineWorld",
+            "name": "The Headline World",
+            "alternateName": "Headline World",
             "logo": "https://www.theheadlineworld.com/logo.png",
-            "url": "https://www.theheadlineworld.com"
+            "url": "https://www.theheadlineworld.com",
           })}
         </script>
       </Head>
