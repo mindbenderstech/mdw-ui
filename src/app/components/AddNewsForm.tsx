@@ -214,9 +214,14 @@ const AddNewsForm = () => {
       } else {
         showToast('error', result.error || 'Failed to submit article.');
       }
-    } catch (err: any) {
-      showToast('error', err.message || 'Unexpected error occurred.');
-    } finally {
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        showToast('error', e.message || 'Unexpected error occurred.');
+      } else {
+        showToast('error', 'An unknown error occurred');
+      }
+    }
+    finally {
       setSubmitting(false);
     }
   };
@@ -227,9 +232,8 @@ const AddNewsForm = () => {
       {toast && (
         <div
           role="status"
-          className={`fixed top-4 right-4 z-50 rounded-lg px-4 py-3 shadow-lg text-sm ${
-            toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-          }`}
+          className={`fixed top-4 right-4 z-50 rounded-lg px-4 py-3 shadow-lg text-sm ${toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+            }`}
         >
           {toast.msg}
         </div>

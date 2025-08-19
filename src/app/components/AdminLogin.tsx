@@ -42,15 +42,19 @@ export default function AdminLogin({ onLoggedIn }: { onLoggedIn: () => void }) {
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Login failed');
-      
-      const expiresInMs =12 * 60 * 60 * 1000;
-      
+
+      const expiresInMs = 12 * 60 * 60 * 1000;
+
       localStorage.setItem('admin_token', data.access_token);
       localStorage.setItem('admin_token_expiry', String(Date.now() + expiresInMs));
       localStorage.setItem('admin_token', data.access_token);
       onLoggedIn();
-    } catch (e: any) {
-      setErr(e.message || 'Login failed');
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message || 'Login failed');
+      } else {
+        setErr('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
