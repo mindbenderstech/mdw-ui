@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getLanguages } from '@/utils/api'; // ✅ Import from api.ts
+import { getLanguages } from '../utils/api'; // ✅ Import from api.ts
 
 type LanguageContextType = {
   language: string;

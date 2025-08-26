@@ -1,12 +1,8 @@
-'use client';
-import Home from './components/Home';
-
-const Page = () => {
-  return (
-    <div>
-      <Home />
-    </div>
-  );
-};
-
-export default Page;
+import { redirect } from 'next/navigation';
+export default function Root() { redirect('/hindi'); }
+// const Page = () => {
+//   return (
+//     <div>
+//     </div>
+//   );
+// };

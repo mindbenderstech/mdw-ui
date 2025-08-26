@@ -1,46 +1,67 @@
-import axios from 'axios';
+// lib/articles.ts
+export type Article = {
+  id: number;
+  unique_id: string;
+  unique_id_url: string;
+  title: string;
+  slug: string;
+  news_source_url: string;
+  image_path: string;
+  byline_author: string;
+  article_detail: string;
+  article_date: string;
+  created_at?: string | null;
+  article_date_and_time?: string | null;
+};
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const RAW_BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "";
 
-// ✅ NEW: Function to get supported languages
+export const API_BASE_URL = RAW_BASE.trim().replace(/\/+$/, '');
+
+// 2) Build URLs safely
+function makeUrl(path: string, params?: Record<string, string>) {
+  const u = new URL(path.replace(/^\/+/, ''), API_BASE_URL + '/');
+  if (params) {
+    for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
+  }
+  return u.toString();
+}
+
+// 3) Common JSON fetcher
+async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(url, { cache: 'no-store', ...init });
+  if (!res.ok) throw new Error(`Fetch ${res.status}: ${url}`);
+  return res.json();
+}
 export const getLanguages = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/api/languages`);
-    return response.data.languages; // ["marathi", "hindi"]
-  } catch (error) {
-    console.error('Error fetching languages:', error);
-    return [];
-  }
+  const url = `${API_BASE_URL}/api/languages`;
+  const data = await getJson<{ languages: string[] }>(url);
+  return data.languages || [];
 };
 
-// Fetch all articles by language
-export const getAllArticles = async (language = 'marathi') => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/api/articles/all`, {
-      params: { language },
-    });
-    return response.data.articles;
-  } catch (error) {
-    console.error('Error fetching all articles:', error);
-    return [];
-  }
-};
+// 4) Fetchers — always use makeUrl/API_BASE_URL (never process.env directly)
+export async function fetchAllArticles(language: string): Promise<Article[]> {
+  const url = makeUrl('api/articles/all', { language });
+  const data = await getJson<{ articles: Article[] }>(url);
+  return data.articles ?? [];
+}
 
-// Fetch one article by unique_id_url and language
-export const getArticleByUniqueIdUrl = async (unique_id_url: string, language = 'marathi') => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/articles/${unique_id_url}?language=${language}`, {
-      cache: "no-store", // Avoid caching
-    });
+export async function fetchArticleByIdUrl(language: string, uniqueIdUrl: string): Promise<Article | null> {
+  const url = makeUrl(`api/articles/${encodeURIComponent(uniqueIdUrl)}`, { language });
+  const data = await getJson<{ article: Article | null }>(url);
+  return data.article ?? null;
+}
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch article");
-    }
+export async function fetchCategoryArticles(language: string, category: string): Promise<Article[]> {
+  const url = makeUrl(`api/articles/category/${encodeURIComponent(category)}`, { language });
+  const data = await getJson<{ articles: Article[] }>(url);
+  return data.articles ?? [];
+}
 
-    const data = await res.json();
-    return data.article;
-  } catch (error) {
-    console.error("Error fetching the article:", error);
-    return null;
-  }
-};
+export async function fetchLanguages(): Promise<string[]> {
+  const url = makeUrl('api/languages');
+  const data = await getJson<{ languages: string[] }>(url, { cache: 'force-cache' });
+  return data.languages ?? [];
+}
