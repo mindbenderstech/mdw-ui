@@ -14,7 +14,8 @@ const eslintConfig = [
   {
     rules: {
       '@next/next/no-img-element': 'off',  // Disable the no-img-element rule
-      '@next/next/no-danger': 'off',
+      '@next/next/no-danger': 'off',  // Disable no-danger rule as well (optional)
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];
