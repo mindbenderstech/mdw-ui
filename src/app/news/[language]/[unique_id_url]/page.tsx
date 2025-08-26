@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { notFound } from 'next/navigation';
-import { fetchArticleByIdUrl, fetchAllArticles, type Article } from '@/utils/api';
+import { fetchArticleByIdUrl, fetchAllArticles} from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel'; // client island is fine to import
 
@@ -25,7 +25,6 @@ function renderArticleDetail(raw: string) {
       ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'span', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'img'],
       ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'id', 'src', 'alt'],
     });
-    // eslint-disable-next-line @next/next/no-danger
     return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: clean }} />;
   }
   const colon = raw.indexOf(':');
@@ -33,7 +32,6 @@ function renderArticleDetail(raw: string) {
   if (colon !== -1) formatted = `<strong>${raw.slice(0, colon + 1)}</strong>${raw.slice(colon + 1)}`;
   const parts = formatted.includes('\n\n') ? formatted.split(/\n{2,}/) : formatted.split(/(?<=[.!?])\s+/);
   const html = parts.map(s => s.trim()).filter(Boolean).map(s => `<p>${s}</p>`).join('');
-  // eslint-disable-next-line @next/next/no-danger
   return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
