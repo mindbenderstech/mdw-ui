@@ -5,9 +5,7 @@ import { fetchAllArticles, type Article } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
-type PageProps = {
-  params: Promise<{ language: string }>;
-};
+type PageProps = {params: Promise<{ language: string }>;};
 
 export const revalidate = 60; // tune freshness as you like (0 = always dynamic)
 
