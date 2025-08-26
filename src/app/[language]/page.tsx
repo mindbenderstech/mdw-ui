@@ -6,7 +6,7 @@ import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
 type PageProps = {
-  params: { language: string };
+  params: Promise<{ language: string }>;
 };
 
 export const revalidate = 60; // tune freshness as you like (0 = always dynamic)
