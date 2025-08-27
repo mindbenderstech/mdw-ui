@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { notFound } from 'next/navigation';
-import { fetchArticleByIdUrl, fetchAllArticles} from '@/utils/api';
+import { fetchArticleByIdUrl, fetchAllArticles } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
-import SwipeCarousel from '@/app/components/SwipeCarousel'; // client island is fine to import
+import SwipeCarousel from '@/app/components/SwipeCarousel';
 
-type PageProps = { params: { language: string; unique_id_url: string } };
+type PageProps = { 
+  params: { language: string; unique_id_url: string };
+};
 
 export const revalidate = 60; // Set ISR (incremental static regeneration)
 
