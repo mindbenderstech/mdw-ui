@@ -5,8 +5,8 @@ import { fetchArticleByIdUrl, fetchAllArticles } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
-type PageProps = { 
-  params: { language: string; unique_id_url: string };
+type PageProps = {
+  params: Promise<{ language: string; unique_id_url: string }>;
 };
 
 export const revalidate = 60; // Set ISR (incremental static regeneration)
@@ -39,7 +39,7 @@ function renderArticleDetail(raw: string) {
 
 // SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { language, unique_id_url } = params;
+  const { language, unique_id_url } = await params;  // Await the promise
   const article = await fetchArticleByIdUrl(language, unique_id_url);
   if (!article) return { title: 'Article not found - TheHeadlineWorld' };
 
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ArticleDetailPage({ params }: PageProps) {
-  const { language, unique_id_url } = params;
+  const { language, unique_id_url } = await params;  // Await the promise
 
   const article = await fetchArticleByIdUrl(language, unique_id_url);
   if (!article) return notFound();
