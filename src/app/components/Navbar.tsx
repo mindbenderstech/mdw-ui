@@ -1,7 +1,7 @@
 // app/components/Navbar.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -11,6 +11,13 @@ const NavBar = () => {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This ensures the code inside runs only on the client side
+    setIsClient(true);
+  }, []);
 
   const langs = (availableLanguages && availableLanguages.length
     ? availableLanguages
@@ -26,7 +33,7 @@ const NavBar = () => {
 
     if (parts.length === 0) return `/${newLang}${suffix}`;
 
-    // ✅ Article page: /news/[language]/[slug...] -> go to home in new language
+    // Article page: /news/[language]/[slug...] -> go to home in new language
     if (parts[0] === 'news') {
       return `/${newLang}${suffix}`;
     }
@@ -67,6 +74,11 @@ const NavBar = () => {
     </a>
   );
 
+  if (!isClient) {
+    // Return null or a fallback for SSR
+    return null;
+  }
+
   return (
     <nav className="bg-teal-700 border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl px-4 flex items-center justify-between h-16">
@@ -78,7 +90,6 @@ const NavBar = () => {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-6 text-sm font-semibold text-white uppercase tracking-wide ml-6">
-          {/* Home hard reload */}
           <a href={`/${language}`} className="hover:bg-white hover:text-black px-2 py-2 rounded ml-6">
             Home
           </a>
