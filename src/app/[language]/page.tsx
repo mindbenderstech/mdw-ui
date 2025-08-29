@@ -9,22 +9,78 @@ type PageProps = {
   params: Promise<{ language: string }>;
 };
 
-export const revalidate = 60; // tune freshness as you like (0 = always dynamic)
+export const revalidate = 60;
 
-// ✅ Replace <Head> with server-side metadata
+// Map your language segments to hreflang & path
+const LANG_MAP: Record<string, { hreflang: string; path: string }> = {
+  hindi:   { hreflang: 'hi', path: 'hindi' },
+  english: { hreflang: 'en', path: 'english' },
+  marathi: { hreflang: 'mr', path: 'marathi' },
+  kannada: { hreflang: 'kn', path: 'kannada' },
+};
+
+const SITE = {
+  brand: 'The Headline World',
+  url: 'https://www.theheadlineworld.com',
+  logo: 'https://www.theheadlineworld.com/logo.png',
+  tag: 'Fast, clear, credible news',
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { language } = await params;  // Accessing language here
+  const { language } = await params;
+  const lang = LANG_MAP[language]?.hreflang ?? 'hi';
+
+  const metadataBase = new URL(SITE.url);
+  const canonical = LANG_MAP[language]
+    ? `${SITE.url}/${LANG_MAP[language].path}`
+    : SITE.url;
+
+  const languageAlternates: Record<string, string> = {
+    'x-default': SITE.url, // helpful fallback
+  };
+  Object.values(LANG_MAP).forEach((v) => {
+    languageAlternates[v.hreflang] = `${SITE.url}/${v.path}`;
+  });
+
+  const title = `${SITE.brand} — ${SITE.tag}`;
+  const description = `${SITE.brand} is your source for the latest headlines and articles across categories including sports, crime, entertainment, and more.`;
+
   return {
-    title: 'The Headline World - Latest News, Articles, and More on Headlines',
-    description:
-      'The Headline World is your source for the latest headlines and articles across various categories including sports, crime, entertainment, and more.',
-    openGraph: {
-      title: 'The Headline World - Latest News and Articles on Headlines',
-      description:
-        'The Headline World is your source for the latest headlines and articles across various categories including sports, crime, entertainment, and more.',
-      url: 'https://www.theheadlineworld.com',
-      images: [{ url: 'https://www.theheadlineworld.com/logo.png' }],
+    metadataBase,
+    title,
+    description,
+    alternates: {
+      canonical,
+      languages: languageAlternates,
     },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: SITE.brand,
+      images: [{ url: SITE.logo }],
+      type: 'website',
+      // If you prefer BCP-47-like OG locale, you can use 'en_US', 'hi_IN', etc.
+      locale: lang,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [SITE.logo],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-snippet': -1,
+        'max-image-preview': 'large',
+        'max-video-preview': -1,
+      },
+    },
+    // verification: { google: 'YOUR_GSC_VERIFICATION_CODE' },
   };
 }
 
@@ -43,7 +99,8 @@ export default async function HomePage({ params }: PageProps) {
   const trendingArticles = getRandomArticles(5);
 
   const section = (title: string, keyword: string) => {
-    const matched = articles.filter((a) => a.news_source_url?.toLowerCase().includes(keyword));
+    const k = keyword.toLowerCase();
+    const matched = articles.filter((a) => a.news_source_url?.toLowerCase().includes(k));
     if (!matched.length) return null;
     const [featured, ...rest] = matched;
 
@@ -75,7 +132,7 @@ export default async function HomePage({ params }: PageProps) {
             <SwipeCarousel articles={rest.slice(0, 4)} language={language} slidesPerViewMobile={2} />
           </div>
 
-          {/* Desktop list (unchanged) */}
+          {/* Desktop list */}
           <div className="w-1/2 grid grid-cols-1 gap-4 hidden sm:grid">
             {rest.slice(0, 4).map((article) => (
               <Link
@@ -106,14 +163,34 @@ export default async function HomePage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            name: 'The Headline World',
-            alternateName: 'Headline World',
-            logo: 'https://www.theheadlineworld.com/logo.png',
-            url: 'https://www.theheadlineworld.com',
-          }),
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: SITE.brand,
+              alternateName: ['TheHeadlineWorld', 'Headline World'],
+              logo: SITE.logo,
+              url: SITE.url,
+              sameAs: [
+                // 'https://www.facebook.com/yourpage',
+                // 'https://twitter.com/yourhandle',
+                // 'https://www.instagram.com/yourhandle',
+                // 'https://www.youtube.com/@yourchannel'
+              ],
+            },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: SITE.brand,
+              alternateName: ['TheHeadlineWorld', 'Headline World'],
+              url: SITE.url,
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: `${SITE.url}/search?q={search_term_string}`,
+                'query-input': 'required name=search_term_string',
+              },
+            },
+          ]),
         }}
       />
 
