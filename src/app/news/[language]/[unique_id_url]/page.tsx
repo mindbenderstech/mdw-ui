@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { notFound } from 'next/navigation';
-import { fetchArticleByIdUrl, fetchAllArticles } from '@/utils/api';
+import { fetchArticleByIdUrl, fetchTrending, fetchCategoryLatest, type Article } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
@@ -65,20 +65,21 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   const article = await fetchArticleByIdUrl(language, unique_id_url);
   if (!article) return notFound();
 
-  const allArticles = await fetchAllArticles(language);
-  const trendingArticles = allArticles
-    .filter(a => a.unique_id_url !== unique_id_url)
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 5);
-
   const categoryFrom = (url?: string | null) => {
     if (!url) return null;
     const m = url.match(/https?:\/\/[^/]+\/([^/]+)\//);
     return m ? m[1] : null;
   };
   const articleCategory = categoryFrom(article.news_source_url);
-  const relatedArticles = allArticles
-    .filter(a => a.unique_id_url !== unique_id_url && categoryFrom(a.news_source_url) === articleCategory)
+
+  // Fetch trending and related (category-latest) efficiently
+  const [trendingArticles, relatedPool]: [Article[], Article[]] = await Promise.all([
+    fetchTrending(language, 5),
+    articleCategory ? fetchCategoryLatest(language, articleCategory, 6) : Promise.resolve([] as Article[]),
+  ]);
+
+  const relatedArticles = relatedPool
+    .filter(a => a.unique_id_url !== unique_id_url)
     .slice(0, 3);
 
   return (

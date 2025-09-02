@@ -1,4 +1,4 @@
-// lib/articles.ts
+// utils/api.ts
 export type Article = {
   id: number;
   unique_id: string;
@@ -22,7 +22,14 @@ export const API_BASE_URL = RAW_BASE.trim().replace(/\/+$/, '');
 
 // 2) Build URLs safely
 function makeUrl(path: string, params?: Record<string, string>) {
-  const u = new URL(path.replace(/^\/+/, ''), API_BASE_URL + '/');
+  const cleanPath = path.replace(/^\/+/, '');
+  // If no base URL is configured, build a relative URL
+  if (!API_BASE_URL) {
+    const qs = params ? `?${new URLSearchParams(params).toString()}` : '';
+    return `/${cleanPath}${qs}`;
+  }
+  // Otherwise, build absolute URL against the API base
+  const u = new URL(cleanPath, API_BASE_URL + '/');
   if (params) {
     for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
   }
@@ -30,11 +37,16 @@ function makeUrl(path: string, params?: Record<string, string>) {
 }
 
 // 3) Common JSON fetcher
-async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, { cache: 'no-store', ...init });
+// IMPORTANT: do NOT force 'no-store' here, so next.revalidate can work.
+async function getJson<T>(
+  url: string,
+  init?: RequestInit & { next?: { revalidate?: number } }
+): Promise<T> {
+  const res = await fetch(url, init);
   if (!res.ok) throw new Error(`Fetch ${res.status}: ${url}`);
   return res.json();
 }
+
 export const getLanguages = async () => {
   const url = `${API_BASE_URL}/api/languages`;
   const data = await getJson<{ languages: string[] }>(url);
@@ -64,4 +76,19 @@ export async function fetchLanguages(): Promise<string[]> {
   const url = makeUrl('api/languages');
   const data = await getJson<{ languages: string[] }>(url, { cache: 'force-cache' });
   return data.languages ?? [];
+}
+
+export async function fetchLatest(language: string, limit = 6, offset = 0) {
+  const url = makeUrl('api/articles/latest', { language, limit: String(limit), offset: String(offset) });
+  return getJson<{ articles: Article[] }>(url, { next: { revalidate: 60 } }).then(d => d.articles ?? []);
+}
+
+export async function fetchCategoryLatest(language: string, category: string, limit = 8) {
+  const url = makeUrl(`api/articles/category/${encodeURIComponent(category)}/latest`, { language, limit: String(limit) });
+  return getJson<{ articles: Article[] }>(url, { next: { revalidate: 120 } }).then(d => d.articles ?? []);
+}
+
+export async function fetchTrending(language: string, pick = 5) {
+  const url = makeUrl('api/articles/trending', { language, pick: String(pick) });
+  return getJson<{ articles: Article[] }>(url, { next: { revalidate: 60 } }).then(d => d.articles ?? []);
 }

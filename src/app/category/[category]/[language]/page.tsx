@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
-import { fetchCategoryArticles, type Article } from '@/utils/api';
+import { fetchCategoryLatest, fetchTrending, type Article } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 
 type PageProps = {
@@ -35,13 +35,11 @@ const truncate = (text: string, n: number) =>
 export default async function CategoryPage({ params }: PageProps) {
   const { category, language } = await params;
 
-  // ✅ Server-side fetch
-  const articles: Article[] = await fetchCategoryArticles(language, category);
-
-  // Simple trending pick (server-side)
-  const getRandomArticles = (arr: Article[], count: number) =>
-    [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
-  const trendingArticles = getRandomArticles(articles, 5);
+  // ✅ Server-side fetch using new, efficient endpoints
+  const [articles, trendingArticles]: [Article[], Article[]] = await Promise.all([
+    fetchCategoryLatest(language, category, 24), // adjust limit if you want
+    fetchTrending(language, 5),
+  ]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-6 px-6 ">
