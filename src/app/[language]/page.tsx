@@ -1,7 +1,7 @@
 // app/[language]/page.tsx (SERVER COMPONENT)
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { fetchAllArticles, type Article } from '@/utils/api';
+import { fetchLatest, fetchCategoryLatest, fetchTrending, type Article } from '@/utils/api';
 import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
@@ -86,23 +86,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function HomePage({ params }: PageProps) {
   const { language } = await params;  // You are already getting 'language' here
-  const articles: Article[] = await fetchAllArticles(language);
 
-  if (!articles?.length) {
+  // Fetch only what's needed, in parallel
+  const [latest, sports, crime, entertainment, trendingArticles] = await Promise.all([
+    fetchLatest(language, 5),
+    fetchCategoryLatest(language, 'sports', 5),
+    fetchCategoryLatest(language, 'crime', 5),
+    fetchCategoryLatest(language, 'entertainment', 5),
+    fetchTrending(language, 5),
+  ]);
+
+  if (!latest?.length) {
     return <h2 className="mt-20">No articles found.</h2>;
   }
 
-  const latestArticle = articles[0];
-  const nextArticles = articles.slice(1, 5);
-  const getRandomArticles = (count: number) =>
-    [...articles].sort(() => 0.5 - Math.random()).slice(0, count);
-  const trendingArticles = getRandomArticles(5);
+  const latestArticle = latest[0];
+  const nextArticles = latest.slice(1, 5);
 
-  const section = (title: string, keyword: string) => {
-    const k = keyword.toLowerCase();
-    const matched = articles.filter((a) => a.news_source_url?.toLowerCase().includes(k));
-    if (!matched.length) return null;
-    const [featured, ...rest] = matched;
+  const section = (title: string, items: Article[]) => {
+    if (!items?.length) return null;
+    const [featured, ...rest] = items;
 
     return (
       <div className="mt-10">
@@ -235,9 +238,9 @@ export default async function HomePage({ params }: PageProps) {
           </div>
         </div>
 
-        {section('Sports News', 'sports')}
-        {section('Crime News', 'crime')}
-        {section('Entertainment News', 'entertainment')}
+        {section('Sports News', sports)}
+        {section('Crime News', crime)}
+        {section('Entertainment News', entertainment)}
       </div>
 
       <div className="w-full sm:w-[30%] space-y-2 md:block hidden">
