@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { notFound } from 'next/navigation';
 import { fetchArticleByIdUrl, fetchTrending, fetchCategoryLatest, type Article } from '@/utils/api';
-import { toCdnUrl } from '@/utils/cdn';
+// import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
 type PageProps = {
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: article.title,
       description: desc,
       url: `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
-      images: [{ url: toCdnUrl(article.image_path) || article.image_path }],
+      images: [{ url: article.image_path }],
     },
     alternates: {
       canonical: `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
@@ -91,7 +91,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             '@context': 'https://schema.org',
             '@type': 'NewsArticle',
             headline: article.title,
-            image: toCdnUrl(article.image_path) || article.image_path,
+            image: article.image_path,
             datePublished: article.article_date,
             author: { '@type': 'Person', name: article.byline_author },
             publisher: { '@type': 'Organization', name: 'TheHeadlineWorld', logo: { '@type': 'ImageObject', url: 'https://www.theheadlineworld.com/logo.png' } },
@@ -107,7 +107,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
           <div className="w-full overflow-hidden rounded-xl shadow">
             <img
-              src={toCdnUrl(article.image_path) || article.image_path}
+              src={article.image_path}
               alt={article.title}
               loading="eager"
               fetchPriority="high"
@@ -138,7 +138,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           {relatedArticles.map(r => (
             <a key={r.unique_id_url} href={`/news/${language}/${r.unique_id_url}`} className="block p-2 rounded hover:bg-gray-100 transition">
               <img
-                src={toCdnUrl(r.image_path) || r.image_path}
+                src={r.image_path}
                 alt={r.title}
                 loading="lazy"
                 decoding="async"
@@ -159,7 +159,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         {trendingArticles.map(t => (
           <a key={t.unique_id_url} href={`/news/${language}/${t.unique_id_url}`} className="block p-2 rounded hover:bg-gray-100 transition">
             <img
-              src={toCdnUrl(t.image_path) || t.image_path}
+              src={t.image_path}
               alt={t.title}
               loading="lazy"
               decoding="async"

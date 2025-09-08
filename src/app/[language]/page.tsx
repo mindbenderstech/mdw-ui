@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { fetchLatest, fetchCategoryLatest, fetchTrending, type Article } from '@/utils/api';
-import { toCdnUrl } from '@/utils/cdn';
+// import { toCdnUrl } from '@/utils/cdn';
 import SwipeCarousel from '@/app/components/SwipeCarousel';
 
 type PageProps = {
@@ -113,7 +113,7 @@ export default async function HomePage({ params }: PageProps) {
         <div className="flex gap-4 sm:flex-row flex-col">
           <Link href={`/news/${language}/${featured.unique_id_url}`} className="w-full sm:w-1/2 block group mt-4">
             <img
-              src={toCdnUrl(featured.image_path) || featured.image_path}
+              src={featured.image_path}
               alt={`Image related to ${featured.title}`}
               loading="eager"
               fetchPriority="high"
@@ -144,7 +144,7 @@ export default async function HomePage({ params }: PageProps) {
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
-                  src={toCdnUrl(article.image_path) || article.image_path}
+                  src={article.image_path}
                   alt={`Image related to ${article.title}`}
                   loading="lazy"
                   decoding="async"
@@ -201,7 +201,7 @@ export default async function HomePage({ params }: PageProps) {
         <div className="flex gap-4 sm:flex-row flex-col">
           <Link href={`/news/${language}/${latestArticle.unique_id_url}`} className="w-full sm:w-1/2 block group mt-3">
             <img
-              src={toCdnUrl(latestArticle.image_path) || latestArticle.image_path}
+              src={latestArticle.image_path}
               alt={`Image related to ${latestArticle.title}`}
               loading="eager"
               width={1200}
@@ -224,7 +224,7 @@ export default async function HomePage({ params }: PageProps) {
                 className="flex items-start gap-3 hover:bg-gray-100 p-2 rounded transition-colors"
               >
                 <img
-                  src={toCdnUrl(article.image_path) || article.image_path}
+                  src={article.image_path}
                   alt={`Image related to ${article.title}`}
                   loading="lazy"
                   decoding="async"
@@ -252,7 +252,7 @@ export default async function HomePage({ params }: PageProps) {
             className="block rounded hover:bg-gray-100 p-1 transition"
           >
             <img
-              src={toCdnUrl(article.image_path) || article.image_path}
+              src={article.image_path}
               alt={`Image related to ${article.title}`}
               loading="lazy"
               decoding="async"

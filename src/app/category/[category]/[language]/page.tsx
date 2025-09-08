@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import DOMPurify from 'isomorphic-dompurify';
 import { fetchCategoryLatest, fetchTrending, type Article } from '@/utils/api';
-import { toCdnUrl } from '@/utils/cdn';
+// import { toCdnUrl } from '@/utils/cdn';
 
 type PageProps = {
   params: Promise<{ category: string; language: string }>;
@@ -84,7 +84,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   <div className="flex flex-col md:flex-row gap-4">
                     {article.image_path && (
                       <img
-                        src={toCdnUrl(article.image_path) || article.image_path}
+                        src={article.image_path}
                         alt={article.title}
                         loading="lazy"
                         decoding="async"
@@ -122,7 +122,7 @@ export default async function CategoryPage({ params }: PageProps) {
             className="block p-2 rounded hover:bg-gray-100 transition"
           >
             <img
-              src={toCdnUrl(article.image_path) || article.image_path}
+              src={article.image_path}
               alt={article.title}
               loading="lazy"
               decoding="async"
