@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${cap} News - TheHeadlineWorld`,
       description: `Read the latest news and articles about ${cap} on TheHeadlineWorld.`,
       url: `https://www.theheadlineworld.com/${category}`,
-      images: [{ url: 'https://www.theheadlineworld.com/logo.png' }],
+      images: [{ url: 'https://www.theheadlineworld.com/images/theheadlineworld-logo-trans.png' }],
     },
   };
 }
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 name: 'TheHeadlineWorld',
                 logo: {
                   '@type': 'ImageObject',
-                  url: 'https://www.theheadlineworld.com/logo.png',
+                  url: 'https://www.theheadlineworld.com/images/theheadlineworld-logo-trans.png',
                 },
               },
             },

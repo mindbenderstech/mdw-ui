@@ -28,11 +28,11 @@ const About = () => {
           </div>
 
           {/* Right Section with Image */}
-          <div className="flex justify-center w-full h-100">
+          <div className="flex justify-center w-full h-85">
             <img
-              src="/images/theheadlineworld_logo.png"
+              src="/images/theheadlineworld logonew.png"
               alt="TheHeadlineWorld Logo"
-              className="rounded-lg shadow-lg p-5 bg-teal-600"
+              className="rounded-lg shadow-lg p-5 bg-white"
             />
           </div>
         </div>

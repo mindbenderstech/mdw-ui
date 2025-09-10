@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
+import Link from 'next/link';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,12 +80,14 @@ const NavBar = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <nav className="bg-teal-700 border-b border-gray-200 shadow-sm fixed top-0 left-0 w-full z-50">
-        <div className="max-w-7xl px-4 flex items-center justify-between h-16">
-          <img
-            src="/images/theheadlineworld navbar logo.png"
-            alt="TheHeadlineWorld Logo"
-            className="md:w-40 h-17 py-1 mr-6 object-contain sm:block w-20 h-15"
-          />
+        <div className="max-w-7xl px-4 flex items-center justify-between h-17">
+          <Link href={`/${language}`} className="flex-shrink-0">
+            <img
+              src="/images/theheadlineworld-logo-trans.png"
+              alt="TheHeadlineWorld Logo"
+              className="w-40 h-16 mr-6 object-contain"
+            />
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-6 text-sm font-semibold text-white uppercase tracking-wide ml-6">

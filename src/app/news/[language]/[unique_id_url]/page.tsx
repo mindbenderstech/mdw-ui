@@ -94,7 +94,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             image: article.image_path,
             datePublished: article.article_date,
             author: { '@type': 'Person', name: article.byline_author },
-            publisher: { '@type': 'Organization', name: 'TheHeadlineWorld', logo: { '@type': 'ImageObject', url: 'https://www.theheadlineworld.com/logo.png' } },
+            publisher: { '@type': 'Organization', name: 'TheHeadlineWorld', logo: { '@type': 'ImageObject', url: 'https://www.theheadlineworld.com/images/theheadlineworld-logo-trans.png' } },
             url: `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
           }),
         }}
