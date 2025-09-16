@@ -5,7 +5,7 @@ const About = () => {
     <div className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-teal-700">About TheHeadlineWorld</h1>
+          <h1 className="text-4xl mt-10 font-extrabold text-teal-700">About TheHeadlineWorld</h1>
           <p className="mt-4 text-xl text-gray-600">
             Welcome to TheHeadlineWorld, your go-to source for fast, clear, and credible news from across the globe.
           </p>
@@ -28,11 +28,11 @@ const About = () => {
           </div>
 
           {/* Right Section with Image */}
-          <div className="flex justify-center w-full h-85">
+          <div className="flex justify-center w-full h-80">
             <img
-              src="/images/theheadlineworld logonew.png"
+              src="/images/Theheadlineworld-logo1.png"
               alt="TheHeadlineWorld Logo"
-              className="rounded-lg shadow-lg p-5 bg-white"
+              className="rounded-lg shadow-lg p-5 bg-teal-600"
             />
           </div>
         </div>

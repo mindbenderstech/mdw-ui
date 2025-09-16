@@ -6,7 +6,7 @@ const Privacy = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-teal-700">Privacy Policy</h1>
+          <h1 className="text-4xl mt-10 font-extrabold text-teal-700">Privacy Policy</h1>
           <p className="mt-3 text-lg text-gray-600">
             At <strong>TheHeadlineWorld</strong>, your trust matters. Here&apos;s how we handle your data.
           </p>

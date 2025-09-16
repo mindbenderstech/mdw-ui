@@ -6,7 +6,7 @@ const Disclaimer = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-teal-700">Disclaimer</h1>
+          <h1 className="text-4xl mt-10 font-extrabold text-teal-700">Disclaimer</h1>
           <p className="mt-3 text-lg text-gray-600">
             Transparency matters. Please read the following carefully.
           </p>

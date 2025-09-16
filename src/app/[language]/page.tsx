@@ -22,7 +22,7 @@ const LANG_MAP: Record<string, { hreflang: string; path: string }> = {
 const SITE = {
   brand: 'The Headline World',
   url: 'https://www.theheadlineworld.com',
-  logo: '/images/theheadlineworld-logo-trans.png',
+  logo: '/images/Theheadlineworld-logo1.png',
   tag: 'Fast, clear, credible news',
 };
 

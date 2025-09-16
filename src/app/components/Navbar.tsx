@@ -83,7 +83,7 @@ const NavBar = () => {
         <div className="max-w-7xl px-4 flex items-center justify-between h-17">
           <Link href={`/${language}`} className="flex-shrink-0">
             <img
-              src="/images/theheadlineworld-logo-trans.png"
+              src="/images/Theheadlineworld-logo1.png"
               alt="TheHeadlineWorld Logo"
               className="w-40 h-16 mr-6 object-contain"
             />

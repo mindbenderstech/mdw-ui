@@ -6,7 +6,7 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Title */}
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-teal-700">Contact Us</h1>
+          <h1 className="text-4xl mt-10 font-extrabold text-teal-700">Contact Us</h1>
           <p className="mt-4 text-xl text-gray-600">
             We&apos;d love to hear from you! Whether you have a question, feedback, or just want to connect, feel free to reach out.
           </p>
