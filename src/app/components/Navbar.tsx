@@ -158,7 +158,7 @@ const NavBar = () => {
             {/* Mobile Search Icon */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="sm:hidden text-white hover:bg-indigo-800  rounded"
+              className="sm:hidden text-white hover:bg-indigo-800 rounded"
               aria-label="Open search"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
@@ -166,8 +166,28 @@ const NavBar = () => {
               </svg>
             </button>
 
-            <button className="text-white px-2 py-2 rounded-md hover:bg-red-500 focus:outline-none" aria-label="Login">
+            {/* Desktop Login Button */}
+            <button className="hidden sm:block text-white px-3 py-2 rounded-md hover:bg-red-500 focus:outline-none" aria-label="Login">
               Login
+            </button>
+
+            {/* Mobile Login Icon */}
+            <button
+              className="sm:hidden text-white hover:bg-red-500 rounded-md focus:outline-none"
+              aria-label="Login"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-7 h-7"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a3 3 0 110 6 3 3 0 010-6zm0 12a7.978 7.978 0 01-4.9-1.7 5 5 0 019.8 0A7.978 7.978 0 0112 18z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </button>
 
             {/* Language Selector */}
