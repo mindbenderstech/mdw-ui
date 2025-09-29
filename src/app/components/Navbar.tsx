@@ -1,14 +1,22 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import Link from 'next/link';
+import { searchArticles, Article } from '@/utils/api';  // Import Article type
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false); // Track client-side rendering
   const { language, setLanguage, availableLanguages } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // mobile search toggle
+
+  // Define the state type for searchResults
+  const [searchResults, setSearchResults] = useState<Article[]>([]);
+
+  const router = useRouter();
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -61,7 +69,30 @@ const NavBar = () => {
     window.location.assign(nextUrl); // hard reload
   };
 
-  // helper to render a hard-reload category link
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!searchQuery.trim()) return;
+
+    try {
+      // Call backend search API
+      const results = await searchArticles(searchQuery, language);
+      setSearchResults(results);
+
+      // Redirect to search results page
+      router.push(`/search-results/${language}?query=${encodeURIComponent(searchQuery)}`);
+
+      // Close mobile search after submit
+      setIsSearchOpen(false);
+    } catch (err) {
+      console.error('Search error:', err);
+    }
+  };
+
   const Cat = ({ slug, children }: { slug: string; children: React.ReactNode }) => (
     <a
       href={`/category/${slug}/${language}`}
@@ -104,13 +135,17 @@ const NavBar = () => {
 
           {/* Right side: Search, Login, Language Selector */}
           <div className="flex items-center space-x-4">
-            <div className="relative hidden sm:block md:block lg:block xl:block">
+            {/* Desktop Search */}
+            <form onSubmit={handleSearchSubmit} className="relative hidden sm:block md:block lg:block xl:block">
               <input
                 type="text"
                 placeholder="Search..."
+                value={searchQuery}
+                onChange={handleSearchChange}
                 className="ml-4 px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-white w-24 sm:w-32 md:w-48 lg:w-48 xl:w-48"
               />
               <button
+                type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white hover:bg-indigo-800 p-1 rounded focus:outline-none"
                 aria-label="Search"
               >
@@ -118,9 +153,20 @@ const NavBar = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 10-7 7 7 7 0 007-7z" />
                 </svg>
               </button>
-            </div>
+            </form>
 
-            <button className="text-white px-3 py-2 rounded-md hover:bg-red-500 focus:outline-none" aria-label="Login">
+            {/* Mobile Search Icon */}
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="sm:hidden text-white hover:bg-indigo-800  rounded"
+              aria-label="Open search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 10-7 7 7 7 0 007-7z" />
+              </svg>
+            </button>
+
+            <button className="text-white px-2 py-2 rounded-md hover:bg-red-500 focus:outline-none" aria-label="Login">
               Login
             </button>
 
@@ -152,7 +198,7 @@ const NavBar = () => {
           </div>
 
           {/* Hamburger for Mobile */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden ml-1 flex items-center">
             <button onClick={toggleMenu} className="text-blue-600 hover:text-blue-800 focus:outline-none" aria-label="Open mobile menu">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -160,6 +206,31 @@ const NavBar = () => {
             </button>
           </div>
         </div>
+
+        {/* Mobile Search Overlay */}
+        {isSearchOpen && (
+          <div className="sm:hidden absolute top-17 left-0 w-full bg-white p-3 shadow-md z-50">
+            <form onSubmit={handleSearchSubmit} className="relative w-full">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full px-4 py-2 rounded-md text-black pl-2 pr-10 focus:outline-none bg-gray-100"
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black"
+                aria-label="Search"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 10a7 7 0 10-7 7 7 7 0 007-7z" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        )}
 
         {/* Mobile Dropdown */}
         {isMenuOpen && (

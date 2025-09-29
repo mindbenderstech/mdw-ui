@@ -92,3 +92,9 @@ export async function fetchTrending(language: string, pick = 5) {
   const url = makeUrl('api/articles/trending', { language, pick: String(pick) });
   return getJson<{ articles: Article[] }>(url, { next: { revalidate: 60 } }).then(d => d.articles ?? []);
 }
+
+export async function searchArticles(query: string, language: string): Promise<Article[]> {
+  const url = makeUrl('api/articles/search', { query, language });
+  const data = await getJson<{ articles: Article[] }>(url);
+  return data.articles ?? [];
+}
