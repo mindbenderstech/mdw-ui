@@ -18,13 +18,13 @@ const truncate = (text: string, n: number) =>
   text.length > n ? text.slice(0, n - 1).trimEnd() + '…' : text;
 
 const hasHtmlTags = (t: string) =>
-  /<\s*(p|h1|h2|h3|h4|h5|h6|ul|ol|li|blockquote|strong|em|span|br|a|img)\b/i.test(t);
+  /<\s*(p|h1|h2|h3|h4|h5|h6|ul|ol|li|blockquote|strong|em|span|br|a|img|details|summary|small)\b/i.test(t);
 
 function renderArticleDetail(raw: string) {
   if (!raw) return null;
   if (hasHtmlTags(raw)) {
     const clean = DOMPurify.sanitize(raw, {
-      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'span', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'img'],
+      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'span', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'img','small','details', 'summary'],
       ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'id', 'src', 'alt'],
     });
     return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: clean }} />;
