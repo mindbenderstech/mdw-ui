@@ -77,7 +77,7 @@ export default async function CategoryPage({ params }: PageProps) {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-6">
             {articles.map((article) => {
-              const snippet = truncate(toPlainText(article.article_detail), 200);
+              const snippet = truncate(toPlainText(article.slug), 250);
               return (
                 <div key={article.unique_id_url} className="pb-4">
                   <h2 className="sm:text-lg font-semibold mb-2 truncate">{article.title}</h2>
@@ -95,7 +95,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     )}
                     <div className="flex flex-col justify-between md:w-1/2">
                       <p className="text-gray-700 mt-2 text-sm">{snippet}</p>
-                      <p className="text-black text-xs">{article.article_date}</p>
+                      <p className="text-gray-500 text-xs">{article.article_date}</p>
 
                       <Link
                         href={`/news/${language}/${article.unique_id_url}`}
