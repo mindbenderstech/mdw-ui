@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'TheHeadlineWorld',
   description: 'Latest News from TheHeadlineWorld',
+  verification:{
+    google:"sN8hNKkyFmpdByYgzaUO2Ub4AJhKrBQLehBuf-J4eB4"
+  },
   icons: {
     icon: '/images/favicon-32x32.png',
   },
