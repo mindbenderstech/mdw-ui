@@ -4,3 +4,4 @@ Disallow: /search
 Allow: /
 
 Sitemap: https://api.theheadlineworld.com/sitemap.xml
+Sitemap: https://api.theheadlineworld.com/sitemap-news.xml
