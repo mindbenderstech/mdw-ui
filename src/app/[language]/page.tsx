@@ -13,7 +13,7 @@ export const revalidate = 60;
 
 // Map your language segments to hreflang & path
 const LANG_MAP: Record<string, { hreflang: string; path: string }> = {
-  hindi:   { hreflang: 'hi', path: 'hindi' },
+  hindi: { hreflang: 'hi', path: 'hindi' },
   english: { hreflang: 'en', path: 'english' },
   marathi: { hreflang: 'mr', path: 'marathi' },
   kannada: { hreflang: 'kn', path: 'kannada' },
@@ -63,6 +63,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       // If you prefer BCP-47-like OG locale, you can use 'en_US', 'hi_IN', etc.
       locale: lang,
     },
+    other: { "inLanguage": lang },
     twitter: {
       card: 'summary_large_image',
       title,

@@ -47,6 +47,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${article.title} - TheHeadlineWorld`,
     description: desc,
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: article.title,
       description: desc,
@@ -57,6 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
     },
   };
+
 }
 
 export default async function ArticleDetailPage({ params }: PageProps) {
@@ -77,7 +82,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     fetchTrending(language, 5),
     articleCategory ? fetchCategoryLatest(language, articleCategory, 6) : Promise.resolve([] as Article[]),
   ]);
-
+  const desc01 = truncate(toPlainText(article.article_detail), 160);
   const relatedArticles = relatedPool
     .filter(a => a.unique_id_url !== unique_id_url)
     .slice(0, 3);
@@ -88,13 +93,29 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'NewsArticle',
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
             headline: article.title,
+            description: desc01,
             image: article.image_path,
             datePublished: article.article_date,
-            author: { '@type': 'Person', name: article.byline_author },
-            publisher: { '@type': 'Organization', name: 'TheHeadlineWorld', logo: { '@type': 'ImageObject', url: 'https://www.theheadlineworld.com/images/Theheadlineworld-logo1.png' } },
+            dateModified: article.article_date,
+            author: {
+              "@type": "Person",
+              name: article.byline_author || "The Headline World",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "The Headline World",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://www.theheadlineworld.com/images/Theheadlineworld-logo1.png",
+              },
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
+            },
             url: `https://www.theheadlineworld.com/news/${language}/${article.unique_id_url}`,
           }),
         }}
