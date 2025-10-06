@@ -3,5 +3,5 @@ Disallow: /admin
 Disallow: /search
 Allow: /
 
-Sitemap: https://api.theheadlineworld.com/sitemap.xml
-Sitemap: https://api.theheadlineworld.com/sitemap-news.xml
+Sitemap: https://www.theheadlineworld.com/sitemap.xml
+Sitemap: https://www.theheadlineworld.com/sitemap-news.xml
