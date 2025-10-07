@@ -1,7 +1,8 @@
 User-agent: *
 Disallow: /admin
 Disallow: /search
+Disallow: /api/
 Allow: /
 
-Sitemap: https://www.theheadlineworld.com/sitemap.xml
 Sitemap: https://www.theheadlineworld.com/sitemap-news.xml
+Sitemap: https://www.theheadlineworld.com/sitemap-all.xml
