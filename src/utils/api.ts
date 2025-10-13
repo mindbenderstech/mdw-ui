@@ -98,3 +98,33 @@ export async function searchArticles(query: string, language: string): Promise<A
   const data = await getJson<{ articles: Article[] }>(url);
   return data.articles ?? [];
 }
+
+export async function fetchCategoryPaginated(
+  language: string,
+  category: string,
+  page: number,
+  limit = 24
+): Promise<Article[]> {
+  const url = makeUrl(`api/articles/category/${encodeURIComponent(category)}`, {
+    language,
+    page: String(page),
+    limit: String(limit),
+  });
+  const data = await getJson<{ articles: Article[] }>(url);
+  return data.articles ?? [];
+}
+
+export async function fetchCategoryPage(
+  language: string,
+  category: string,
+  page: number,
+  limit = 6
+) {
+  const url = makeUrl(`api/articles/category/${encodeURIComponent(category)}`, {
+    language,
+    page: String(page),
+    limit: String(limit),
+  });
+  const data = await getJson<{ articles: Article[]; page: number; total: number; limit: number }>(url);
+  return data;
+}
