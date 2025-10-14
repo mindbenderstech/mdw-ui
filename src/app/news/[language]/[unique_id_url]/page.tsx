@@ -22,20 +22,47 @@ const hasHtmlTags = (t: string) =>
 
 function renderArticleDetail(raw: string) {
   if (!raw) return null;
+
+  // Check if content already has HTML tags
   if (hasHtmlTags(raw)) {
     const clean = DOMPurify.sanitize(raw, {
-      ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'strong', 'em', 'span', 'a', 'ul', 'ol', 'li', 'blockquote', 'br', 'img','small','details', 'summary'],
+      ALLOWED_TAGS: [
+        'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'strong', 'em', 'span', 'a', 'ul', 'ol', 'li',
+        'blockquote', 'br', 'img', 'small', 'details', 'summary'
+      ],
       ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'class', 'id', 'src', 'alt'],
     });
     return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: clean }} />;
   }
-  const colon = raw.indexOf(':');
-  let formatted = raw;
-  if (colon !== -1) formatted = `<strong>${raw.slice(0, colon + 1)}</strong>${raw.slice(colon + 1)}`;
-  const parts = formatted.includes('\n\n') ? formatted.split(/\n{2,}/) : formatted.split(/(?<=[.!?])\s+/);
-  const html = parts.map(s => s.trim()).filter(Boolean).map(s => `<p>${s}</p>`).join('');
+
+  // --- 🧠 No HTML tags: custom formatting ---
+  let text = raw.trim();
+
+  // Bold any prefix before colon (:)
+  text = text.replace(/(^|\s)([^:\n]+:)/g, (match) => {
+    return `<strong>${match.trim()}</strong>`;
+  });
+
+  // Split sentences by `.`
+  const sentences = text
+    .split('.')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(s => s + '.'); // add back period for display
+
+  // Group every 5 sentences into a paragraph
+  const paragraphs: string[] = [];
+  for (let i = 0; i < sentences.length; i += 5) {
+    paragraphs.push(sentences.slice(i, i + 5).join(' '));
+  }
+
+  // Wrap each paragraph in <p>
+  const html = paragraphs.map(p => `<p>${p}</p>`).join('');
+
   return <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: html }} />;
 }
+
 
 // SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
